@@ -6,18 +6,21 @@
 //
 
 import SwiftUI
+import AVKit
 
 struct FeedCell: View {
-    let post: Int
+    let post: Post
+    var player: AVPlayer
+    
+    init(post: Post, player: AVPlayer) {
+        self.post = post
+        self.player = player
+    }
+    
     var body: some View {
         ZStack{
-            Rectangle()
-                .fill(.pink)
+            CustomVideoPlayer(player: player)
                 .containerRelativeFrame([.horizontal, .vertical])
-                .overlay(
-                    Text("Post \(post)")
-                        .foregroundStyle(.white)
-                )
             VStack{
                 Spacer()
                 HStack(alignment: .bottom){
@@ -44,7 +47,7 @@ struct FeedCell: View {
                                     .resizable()
                                     .frame(width: 12, height: 12)
                             }
-                            .offset(y: 22)
+                            .offset(y: 20)
                         }
                         
                         
@@ -73,7 +76,7 @@ struct FeedCell: View {
                                     .frame(width: 28, height: 28)
                                     .foregroundStyle(.white)
                                 
-                                Text("27")
+                                Text("13")
                                     .font(.caption)
                                     .foregroundStyle(.white)
                                     .bold()
@@ -103,9 +106,21 @@ struct FeedCell: View {
             }
             .padding()
         }
+        .onTapGesture {
+            switch player.timeControlStatus {
+            case .paused:
+                player.play()
+            case .waitingToPlayAtSpecifiedRate:
+                break
+            case .playing:
+                player.pause()
+            @unknown default:
+                break
+            }
+        }
     }
 }
 
 #Preview {
-    FeedCell(post: 2)
+    FeedCell(post: Post(id: NSUUID().uuidString, videoURL: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"), player: AVPlayer())
 }
