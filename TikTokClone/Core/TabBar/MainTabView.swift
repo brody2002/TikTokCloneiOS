@@ -11,17 +11,17 @@ struct MainTabView: View {
     @State private var selectedTab: Int = 0
     var body: some View {
         TabView(selection: $selectedTab){
-            Text("Feed")
+            FeedView()
                 .tabItem {
                     VStack{
-                        Image(systemName: selectedTab == 0 ? "house.fill" : "house")
+                        Image(systemName: "house")
                             .environment(\.symbolVariants, selectedTab == 0 ? .fill : .none)
                         Text("Home")
                     }
                 }
                 .onAppear { selectedTab = 0 }
                 .tag(0)
-            Text("Friends")
+            ExploreView()
                 .tabItem {
                     VStack{
                         Image(systemName: "person.2")
@@ -40,7 +40,7 @@ struct MainTabView: View {
                 .onAppear { selectedTab = 2 }
                 .tag(2)
             
-            Text("Inbox")
+            NotificationsView()
                 .tabItem {
                     VStack{
                         Image(systemName: "ellipsis.message")
