@@ -20,6 +20,9 @@ struct CustomVideoPlayer: UIViewControllerRepresentable {
         controller.exitsFullScreenWhenPlaybackEnds = true
         controller.allowsPictureInPicturePlayback = true // shrinks a video into a small player
         controller.videoGravity = .resizeAspectFill // makes video full screen
+        controller.allowsVideoFrameAnalysis = false
+        controller.requiresLinearPlayback = true
+        
         
         return controller
     }

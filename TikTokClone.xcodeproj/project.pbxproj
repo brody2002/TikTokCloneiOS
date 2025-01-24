@@ -6,6 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		964A470B2D440CDA00A8A718 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 964A470A2D440CDA00A8A718 /* FirebaseAnalytics */; };
+		964A470D2D440CDA00A8A718 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 964A470C2D440CDA00A8A718 /* FirebaseAnalyticsOnDeviceConversion */; };
+		964A470F2D440CDA00A8A718 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 964A470E2D440CDA00A8A718 /* FirebaseAnalyticsWithoutAdIdSupport */; };
+		964A47112D440CDA00A8A718 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 964A47102D440CDA00A8A718 /* FirebaseAppCheck */; };
+		964A47132D440CDA00A8A718 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 964A47122D440CDA00A8A718 /* FirebaseAppDistribution-Beta */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		96B99E5E2D4156E600B46D3D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -42,6 +50,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				964A47112D440CDA00A8A718 /* FirebaseAppCheck in Frameworks */,
+				964A470B2D440CDA00A8A718 /* FirebaseAnalytics in Frameworks */,
+				964A47132D440CDA00A8A718 /* FirebaseAppDistribution-Beta in Frameworks */,
+				964A470F2D440CDA00A8A718 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				964A470D2D440CDA00A8A718 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +113,11 @@
 			);
 			name = TikTokClone;
 			packageProductDependencies = (
+				964A470A2D440CDA00A8A718 /* FirebaseAnalytics */,
+				964A470C2D440CDA00A8A718 /* FirebaseAnalyticsOnDeviceConversion */,
+				964A470E2D440CDA00A8A718 /* FirebaseAnalyticsWithoutAdIdSupport */,
+				964A47102D440CDA00A8A718 /* FirebaseAppCheck */,
+				964A47122D440CDA00A8A718 /* FirebaseAppDistribution-Beta */,
 			);
 			productName = TikTokClone;
 			productReference = 96B99E4D2D4156E100B46D3D /* TikTokClone.app */;
@@ -177,6 +195,9 @@
 			);
 			mainGroup = 96B99E442D4156E100B46D3D;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 96B99E4E2D4156E100B46D3D /* Products */;
 			projectDirPath = "";
@@ -540,6 +561,45 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.7.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		964A470A2D440CDA00A8A718 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		964A470C2D440CDA00A8A718 /* FirebaseAnalyticsOnDeviceConversion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsOnDeviceConversion;
+		};
+		964A470E2D440CDA00A8A718 /* FirebaseAnalyticsWithoutAdIdSupport */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsWithoutAdIdSupport;
+		};
+		964A47102D440CDA00A8A718 /* FirebaseAppCheck */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAppCheck;
+		};
+		964A47122D440CDA00A8A718 /* FirebaseAppDistribution-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseAppDistribution-Beta";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 96B99E452D4156E100B46D3D /* Project object */;
 }
