@@ -44,21 +44,9 @@ struct EditProfileView: View {
                         .foregroundStyle(Color(.systemGray2))
                         .fontWeight(.semibold)
                     
-                    HStack{
-                        Text("Name")
-                        Spacer()
-                        Text("LeBron James")
-                    }
-                    HStack{
-                        Text("Username")
-                        Spacer()
-                        Text("lebron.james06")
-                    }
-                    HStack{
-                        Text("Bio")
-                        Spacer()
-                        Text("Add a bio")
-                    }
+                    EditProfileOptionRowView(option: EditProfileOptions.name, value: "Lebron James")
+                    EditProfileOptionRowView(option:EditProfileOptions.username, value: "Lebron06Ez_Money")
+                    EditProfileOptionRowView(option: EditProfileOptions.bio, value: "I'm the goat")
                 }
                 .font(.subheadline)
                 .padding()
@@ -68,6 +56,9 @@ struct EditProfileView: View {
             .task(id: selectedPickerItem){
                 await loadImage(fromItem: selectedPickerItem)
             }
+            .navigationDestination(for: EditProfileOptions.self, destination: { option in
+                Text(option.title)
+            })
             .navigationTitle("Edit Profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
@@ -96,6 +87,20 @@ extension EditProfileView {
         guard let data = try? await item.loadTransferable(type: Data.self) else { return }
         guard let uiImage = UIImage(data: data) else { return }
         self.profileImage = Image(uiImage: uiImage)
+    }
+}
+
+struct EditProfileOptionRowView: View {
+    let option: EditProfileOptions
+    let value: String
+    
+    var body: some View{
+        NavigationLink(value: option){
+            Text(option.title)
+            Spacer()
+            Text(value)
+                .foregroundStyle(.primary)
+        }
     }
 }
 
