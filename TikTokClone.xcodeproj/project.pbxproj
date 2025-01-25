@@ -16,7 +16,7 @@
 		969348422D442C0100569166 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 969348412D442C0100569166 /* FirebaseDatabase */; };
 		969348442D442C0700569166 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 969348432D442C0700569166 /* FirebaseStorage */; };
 		969348462D442C1800569166 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 969348452D442C1800569166 /* FirebaseFirestore */; };
-		969348BA2D455C4C00569166 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 969348B92D455C4C00569166 /* GoogleService-Info.plist */; };
+		9693491F2D45781A00569166 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 969348B92D455C4C00569166 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,9 +43,22 @@
 		96B99E672D4156E600B46D3D /* TikTokCloneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TikTokCloneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		969348C52D4576E900569166 /* Exceptions for "TikTokClone" folder in "TikTokClone" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Preview Content/Preview Assets.xcassets",
+			);
+			target = 96B99E4C2D4156E100B46D3D /* TikTokClone */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		96B99E4F2D4156E100B46D3D /* TikTokClone */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				969348C52D4576E900569166 /* Exceptions for "TikTokClone" folder in "TikTokClone" target */,
+			);
 			path = TikTokClone;
 			sourceTree = "<group>";
 		};
@@ -238,7 +251,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				969348BA2D455C4C00569166 /* GoogleService-Info.plist in Resources */,
+				9693491F2D45781A00569166 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

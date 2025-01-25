@@ -10,14 +10,14 @@ import SwiftUI
 struct CurrentUserProfileView: View {
     
     let authService: AuthService
-    
+    let user: User
     
     var body: some View {
         NavigationStack{
             ScrollView{
                 VStack(spacing: 2){
                     // Profile header
-                    ProfileHeaderView()
+                    ProfileHeaderView(user: user)
                     
                     // Posts grid view
                     PostGridView()
@@ -42,5 +42,5 @@ struct CurrentUserProfileView: View {
 }
 
 #Preview {
-    CurrentUserProfileView(authService: AuthService())
+    CurrentUserProfileView(authService: AuthService(), user: DeveloperPreview.user)
 }
