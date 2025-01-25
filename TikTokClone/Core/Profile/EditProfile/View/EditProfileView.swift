@@ -6,18 +6,35 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct EditProfileView: View {
+    @State private var selectedPickerItem: PhotosPickerItem?
+    @State private var profileImage: Image?
     var body: some View {
         NavigationStack{
             VStack{
-                VStack{
-                    Circle()
-                        .frame(width: 64, height: 64)
-                    Button("Change Photo"){
-                        print("DEBUG: Change photo here...")
+                PhotosPicker(selection: $selectedPickerItem, matching: .images){
+                    VStack{
+                        if let image = profileImage {
+                            image
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 64, height: 64)
+                                .clipShape(Circle())
+                        } else {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 64, height: 64)
+                                .clipShape(Circle())
+                                .foregroundStyle(Color(.systemGray4))
+                        }
+                        
+                        
+                        Text("Change photo")
                     }
-                    .foregroundStyle(.black)
+                    
                 }
                 .padding()
                 
@@ -48,6 +65,9 @@ struct EditProfileView: View {
                 
                 Spacer()
             }
+            .task(id: selectedPickerItem){
+                await loadImage(fromItem: selectedPickerItem)
+            }
             .navigationTitle("Edit Profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
@@ -67,6 +87,15 @@ struct EditProfileView: View {
                 }
             }
         }
+    }
+}
+
+extension EditProfileView {
+    func loadImage(fromItem item: PhotosPickerItem?) async {
+        guard let item else { return }
+        guard let data = try? await item.loadTransferable(type: Data.self) else { return }
+        guard let uiImage = UIImage(data: data) else { return }
+        self.profileImage = Image(uiImage: uiImage)
     }
 }
 
