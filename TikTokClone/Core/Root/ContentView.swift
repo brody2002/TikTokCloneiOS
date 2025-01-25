@@ -8,17 +8,29 @@
 import SwiftUI
 
 struct ContentView: View {
+    @StateObject var viewModel: ContentViewModel
+    private let authService: AuthService
+    
+    init(authService: AuthService){
+        self.authService = authService
+        
+        //self._ when init @StateObject
+        let vm = ContentViewModel(authService: authService)
+        self._viewModel = StateObject(wrappedValue: vm)
+    }
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Group {
+            if viewModel.userSession != nil {
+                // If some is logged in
+                MainTabView(authService: authService)
+            } else {
+                // if someone isn't logged in
+                LoginView(authService: authService)
+            }
         }
-        .padding()
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(authService: AuthService())
 }

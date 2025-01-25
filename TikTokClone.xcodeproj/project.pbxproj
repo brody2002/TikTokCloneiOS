@@ -12,6 +12,11 @@
 		964A470F2D440CDA00A8A718 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 964A470E2D440CDA00A8A718 /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		964A47112D440CDA00A8A718 /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 964A47102D440CDA00A8A718 /* FirebaseAppCheck */; };
 		964A47132D440CDA00A8A718 /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 964A47122D440CDA00A8A718 /* FirebaseAppDistribution-Beta */; };
+		969348402D442BF900569166 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9693483F2D442BF900569166 /* FirebaseAuth */; };
+		969348422D442C0100569166 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 969348412D442C0100569166 /* FirebaseDatabase */; };
+		969348442D442C0700569166 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 969348432D442C0700569166 /* FirebaseStorage */; };
+		969348462D442C1800569166 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 969348452D442C1800569166 /* FirebaseFirestore */; };
+		969348BA2D455C4C00569166 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 969348B92D455C4C00569166 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		969348B92D455C4C00569166 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		96B99E4D2D4156E100B46D3D /* TikTokClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TikTokClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		96B99E5D2D4156E600B46D3D /* TikTokCloneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TikTokCloneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		96B99E672D4156E600B46D3D /* TikTokCloneUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TikTokCloneUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,9 +57,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				964A47112D440CDA00A8A718 /* FirebaseAppCheck in Frameworks */,
+				969348402D442BF900569166 /* FirebaseAuth in Frameworks */,
 				964A470B2D440CDA00A8A718 /* FirebaseAnalytics in Frameworks */,
 				964A47132D440CDA00A8A718 /* FirebaseAppDistribution-Beta in Frameworks */,
 				964A470F2D440CDA00A8A718 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
+				969348462D442C1800569166 /* FirebaseFirestore in Frameworks */,
+				969348442D442C0700569166 /* FirebaseStorage in Frameworks */,
+				969348422D442C0100569166 /* FirebaseDatabase in Frameworks */,
 				964A470D2D440CDA00A8A718 /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -75,11 +85,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9693483E2D442BF900569166 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		96B99E442D4156E100B46D3D = {
 			isa = PBXGroup;
 			children = (
+				969348B92D455C4C00569166 /* GoogleService-Info.plist */,
 				96B99E4E2D4156E100B46D3D /* Products */,
 				96B99E4F2D4156E100B46D3D /* TikTokClone */,
+				9693483E2D442BF900569166 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -118,6 +137,10 @@
 				964A470E2D440CDA00A8A718 /* FirebaseAnalyticsWithoutAdIdSupport */,
 				964A47102D440CDA00A8A718 /* FirebaseAppCheck */,
 				964A47122D440CDA00A8A718 /* FirebaseAppDistribution-Beta */,
+				9693483F2D442BF900569166 /* FirebaseAuth */,
+				969348412D442C0100569166 /* FirebaseDatabase */,
+				969348432D442C0700569166 /* FirebaseStorage */,
+				969348452D442C1800569166 /* FirebaseFirestore */,
 			);
 			productName = TikTokClone;
 			productReference = 96B99E4D2D4156E100B46D3D /* TikTokClone.app */;
@@ -215,6 +238,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				969348BA2D455C4C00569166 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -598,6 +622,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseAppDistribution-Beta";
+		};
+		9693483F2D442BF900569166 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		969348412D442C0100569166 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		969348432D442C0700569166 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		969348452D442C1800569166 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
