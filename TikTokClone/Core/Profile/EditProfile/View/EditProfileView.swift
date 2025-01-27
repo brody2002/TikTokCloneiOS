@@ -11,6 +11,11 @@ import PhotosUI
 struct EditProfileView: View {
     @State private var selectedPickerItem: PhotosPickerItem?
     @State private var profileImage: Image?
+    @State private var uiImage: UIImage?
+    
+    @Environment(\.dismiss) var dismiss
+    @StateObject var manager = EditProfileManager(imageUploader: ImageUploader())
+    let user: User
     var body: some View {
         NavigationStack{
             VStack{
@@ -30,9 +35,8 @@ struct EditProfileView: View {
                                 .clipShape(Circle())
                                 .foregroundStyle(Color(.systemGray4))
                         }
-                        
-                        
                         Text("Change photo")
+                            .foregroundStyle(.black)
                     }
                     
                 }
@@ -44,9 +48,9 @@ struct EditProfileView: View {
                         .foregroundStyle(Color(.systemGray2))
                         .fontWeight(.semibold)
                     
-                    EditProfileOptionRowView(option: EditProfileOptions.name, value: "Lebron James")
-                    EditProfileOptionRowView(option:EditProfileOptions.username, value: "Lebron06Ez_Money")
-                    EditProfileOptionRowView(option: EditProfileOptions.bio, value: "I'm the goat")
+                    EditProfileOptionRowView(option: EditProfileOptions.name, value: user.fullName)
+                    EditProfileOptionRowView(option:EditProfileOptions.username, value: user.username)
+                    EditProfileOptionRowView(option: EditProfileOptions.bio, value: user.bio ?? "Add a bio")
                 }
                 .font(.subheadline)
                 .padding()
@@ -57,21 +61,21 @@ struct EditProfileView: View {
                 await loadImage(fromItem: selectedPickerItem)
             }
             .navigationDestination(for: EditProfileOptions.self, destination: { option in
-                Text(option.title)
+                EditProfileDetailView(option: option, user: user)
             })
             .navigationTitle("Edit Profile")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar{
                 ToolbarItem(placement: .topBarLeading){
                     Button("Cancel"){
-                        
+                        dismiss()
                     }
                     .foregroundStyle(.black)
                 }
                 
                 ToolbarItem(placement: .topBarTrailing){
                     Button("Done"){
-                        
+                        onDoneTapped()
                     }
                     .fontWeight(.semibold)
                     .foregroundStyle(.black)
@@ -81,29 +85,23 @@ struct EditProfileView: View {
     }
 }
 
-extension EditProfileView {
+private extension EditProfileView {
     func loadImage(fromItem item: PhotosPickerItem?) async {
         guard let item else { return }
         guard let data = try? await item.loadTransferable(type: Data.self) else { return }
         guard let uiImage = UIImage(data: data) else { return }
+        self.uiImage = uiImage
         self.profileImage = Image(uiImage: uiImage)
     }
-}
-
-struct EditProfileOptionRowView: View {
-    let option: EditProfileOptions
-    let value: String
-    
-    var body: some View{
-        NavigationLink(value: option){
-            Text(option.title)
-            Spacer()
-            Text(value)
-                .foregroundStyle(.primary)
+    func onDoneTapped(){
+        Task {
+            guard let uiImage else { return }
+            await manager.uploadProfileImage(uiImage)
+            dismiss()
         }
     }
 }
 
 #Preview {
-    EditProfileView()
+    EditProfileView(user: DeveloperPreview.user)
 }

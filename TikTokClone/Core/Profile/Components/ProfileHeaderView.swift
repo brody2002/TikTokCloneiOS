@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ProfileHeaderView: View {
     let user: User
+    @State private var showEditProfile = false
     var body: some View {
         VStack(spacing: 16){
             VStack(spacing: 8){
@@ -33,7 +34,9 @@ struct ProfileHeaderView: View {
             
             //action Button
             Button(
-                action:{},
+                action:{
+                    showEditProfile.toggle()
+                },
                 label:{
                     Text("Edit Profile")
                         .font(.subheadline)
@@ -46,7 +49,9 @@ struct ProfileHeaderView: View {
             )
             
             Divider()
-            
+        }
+        .fullScreenCover(isPresented: $showEditProfile) {
+            EditProfileView(user: user)
         }
     }
 }
