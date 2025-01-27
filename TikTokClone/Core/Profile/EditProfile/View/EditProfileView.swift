@@ -20,20 +20,15 @@ struct EditProfileView: View {
         NavigationStack{
             VStack{
                 PhotosPicker(selection: $selectedPickerItem, matching: .images){
-                    VStack{
+                    VStack{ // refresh
                         if let image = profileImage {
                             image
                                 .resizable()
                                 .scaledToFill()
-                                .frame(width: 64, height: 64)
+                                .frame(width: avatarSize.dimension, height: avatarSize.dimension)
                                 .clipShape(Circle())
                         } else {
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 64, height: 64)
-                                .clipShape(Circle())
-                                .foregroundStyle(Color(.systemGray4))
+                            AvatarView(user: user, size: avatarSize)
                         }
                         Text("Change photo")
                             .foregroundStyle(.black)
@@ -100,7 +95,11 @@ private extension EditProfileView {
             dismiss()
         }
     }
+    var avatarSize: AvatarSize {
+        return .large
+    }
 }
+
 
 #Preview {
     EditProfileView(user: DeveloperPreview.user)

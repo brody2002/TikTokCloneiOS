@@ -17,6 +17,7 @@
 		969348442D442C0700569166 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 969348432D442C0700569166 /* FirebaseStorage */; };
 		969348462D442C1800569166 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 969348452D442C1800569166 /* FirebaseFirestore */; };
 		9693491F2D45781A00569166 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 969348B92D455C4C00569166 /* GoogleService-Info.plist */; };
+		9693493F2D4745A000569166 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 9693493E2D4745A000569166 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 				969348402D442BF900569166 /* FirebaseAuth in Frameworks */,
 				964A470B2D440CDA00A8A718 /* FirebaseAnalytics in Frameworks */,
 				964A47132D440CDA00A8A718 /* FirebaseAppDistribution-Beta in Frameworks */,
+				9693493F2D4745A000569166 /* Kingfisher in Frameworks */,
 				964A470F2D440CDA00A8A718 /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
 				969348462D442C1800569166 /* FirebaseFirestore in Frameworks */,
 				969348442D442C0700569166 /* FirebaseStorage in Frameworks */,
@@ -98,20 +100,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9693483E2D442BF900569166 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		96B99E442D4156E100B46D3D = {
 			isa = PBXGroup;
 			children = (
 				969348B92D455C4C00569166 /* GoogleService-Info.plist */,
 				96B99E4E2D4156E100B46D3D /* Products */,
 				96B99E4F2D4156E100B46D3D /* TikTokClone */,
-				9693483E2D442BF900569166 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -154,6 +148,7 @@
 				969348412D442C0100569166 /* FirebaseDatabase */,
 				969348432D442C0700569166 /* FirebaseStorage */,
 				969348452D442C1800569166 /* FirebaseFirestore */,
+				9693493E2D4745A000569166 /* Kingfisher */,
 			);
 			productName = TikTokClone;
 			productReference = 96B99E4D2D4156E100B46D3D /* TikTokClone.app */;
@@ -233,6 +228,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				969349382D4744A300569166 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 96B99E4E2D4156E100B46D3D /* Products */;
@@ -433,6 +429,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TikTokClone/TikTokClone.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TikTokClone/Preview Content\"";
@@ -462,6 +459,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = TikTokClone/TikTokClone.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"TikTokClone/Preview Content\"";
@@ -608,6 +606,14 @@
 				minimumVersion = 11.7.0;
 			};
 		};
+		969349382D4744A300569166 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -655,6 +661,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 964A46C02D440AD200A8A718 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
+		};
+		9693493E2D4745A000569166 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 969349382D4744A300569166 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

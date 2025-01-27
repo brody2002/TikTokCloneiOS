@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseCore
+import FirebaseAppCheck
 
 // Get's called when app is finishes launching
 class AppDelegate: NSObject, UIApplicationDelegate {
@@ -16,6 +17,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     return true
   }
 }
+class MyAppCheckProvider: NSObject, AppCheckProviderFactory {
+    func createProvider(with app: FirebaseApp) -> (any AppCheckProvider)? {
+        return AppAttestProvider(app: app)
+    }
+}
 
 @main
 struct TikTokCloneApp: App {
@@ -23,7 +29,9 @@ struct TikTokCloneApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     private let authService = AuthService()
     private let userService = UserService()
-    
+    init(){
+        AppCheck.setAppCheckProviderFactory(MyAppCheckProvider())
+    }
     var body: some Scene {
         WindowGroup {
             ContentView(authService: authService, userService: userService)
