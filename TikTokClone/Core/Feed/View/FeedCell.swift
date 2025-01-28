@@ -25,10 +25,10 @@ struct FeedCell: View {
                 Spacer()
                 HStack(alignment: .bottom){
                     VStack(alignment: .leading){
-                        Text("carlos.sainz")
+                        Text("\(post.user)")
                             .fontWeight(.semibold)
                         
-                        Text("Rocket ship prepare for takeoff!!!")
+                        Text("\(post.caption)")
                     }
                     .foregroundStyle(.white)
                     .font(.subheadline)
@@ -60,7 +60,7 @@ struct FeedCell: View {
                                     .frame(width: 28, height: 28)
                                     .foregroundStyle(.white)
                                 
-                                Text("27")
+                                Text("\(post.likesAmount)")
                                     .font(.caption)
                                     .foregroundStyle(.white)
                                     .bold()
@@ -76,7 +76,7 @@ struct FeedCell: View {
                                     .frame(width: 28, height: 28)
                                     .foregroundStyle(.white)
                                 
-                                Text("13")
+                                Text("\(post.commentsAmount)")
                                     .font(.caption)
                                     .foregroundStyle(.white)
                                     .bold()
@@ -122,5 +122,5 @@ struct FeedCell: View {
 }
 
 #Preview {
-    FeedCell(post: Post(id: NSUUID().uuidString, videoURL: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"), player: AVPlayer())
+    FeedCell(post: DeveloperPreview.post, player: AVPlayer())
 }

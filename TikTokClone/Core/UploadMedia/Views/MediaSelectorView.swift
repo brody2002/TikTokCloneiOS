@@ -13,15 +13,18 @@ struct MediaSelectorView: View{
     @State private var selectedItem: PhotosPickerItem?
     @State private var player = AVPlayer()
     @State private var mediaPreview: Movie?
+    
+    @Binding var selectedTab: Int
+    @Binding var previousSelectedtab: Int
     var body: some View{
         NavigationStack{
             VStack{
                 if let mediaPreview {
                     CustomVideoPlayer(player: player)
                         .onAppear{
-                            print("VIDEO PLAYING")
                             player.replaceCurrentItem(with: .init(url: mediaPreview.url))
                         }
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                         .padding()
                 }
             }
@@ -32,25 +35,27 @@ struct MediaSelectorView: View{
             .navigationTitle("New Post")
             .navigationBarTitleDisplayMode(.inline)
             .onAppear {
-                print("VIEW APPEARED")
-                if selectedItem == nil { showMediaPicker = true }
+                if selectedItem == nil { showMediaPicker.toggle() }
             }
             .onDisappear{
-                print("video disapeer")
                 player.replaceCurrentItem(with: nil) // Fully clear AVPlayer
                 player.pause()
                 mediaPreview = nil
                 selectedItem = nil
             }
             .photosPicker(isPresented: $showMediaPicker, selection: $selectedItem, matching: .videos)
-            .toolbar{
-                ToolbarItem(placement: .topBarTrailing){
-                    NavigationLink {
-                        UploadPostView()
-                    } label: {
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    if let unwrappedItem = selectedItem {
+                        NavigationLink {
+                            UploadPostView(selectedItem: unwrappedItem)
+                        } label: {
+                            Text("Next")
+                        }
+                    } else {
                         Text("Next")
+                            .foregroundColor(.gray)
                     }
-
                 }
             }
             .onTapGesture {
@@ -64,6 +69,12 @@ struct MediaSelectorView: View{
                 @unknown default:
                     break
                 }
+            }
+            .onChange(of: showMediaPicker){ _, showMediaPickerBool in
+                if showMediaPickerBool == false && selectedItem == nil {
+                    selectedTab = previousSelectedtab
+                }
+                
             }
         }
     }
@@ -79,5 +90,5 @@ private extension MediaSelectorView {
 }
 
 #Preview {
-    MediaSelectorView()
+    MediaSelectorView(selectedTab: .constant(2), previousSelectedtab: .constant(1))
 }

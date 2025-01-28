@@ -12,7 +12,7 @@ struct EditProfileDetailView: View {
     @State private var value = ""
     
     let option: EditProfileOptions
-    var user: CurrentUser
+    @ObservedObject var user: CurrentUser
     @ObservedObject var manager: EditProfileManager
     var body: some View {
         VStack(alignment: .leading){
@@ -96,7 +96,7 @@ private extension EditProfileDetailView{
             do { try await manager.updateProfileOption(newValue: self.value, option: .bio) }
             catch { print("error uploading bio of firebase") }
         case .username:
-            self.user.bio = self.value
+            self.user.username = self.value
             do { try await manager.updateProfileOption(newValue: self.value, option: .username) }
             catch { print("error uploading username of firebase") }
         }

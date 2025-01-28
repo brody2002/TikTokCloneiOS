@@ -20,6 +20,12 @@ struct ProfileHeaderView: View {
                 Text(user.username)
                     .font(.subheadline)
                     .fontWeight(.semibold)
+                
+                if let bio = user.bio {
+                    Text(bio)
+                        .font(.footnote)
+                        .frame(alignment: .leading)
+                }
             }
             
             // Stats View

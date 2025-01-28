@@ -9,25 +9,16 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var selectedTab: Int = 0
+    @State private var prevSelectedTab: Int = 0
     let authService: AuthService
     let user: User
-    @StateObject var currentUser: CurrentUser
-    
-    init(authService: AuthService, user: User){
-        self.authService = authService
-        self.user = user
-        self._currentUser = StateObject(
-            wrappedValue: CurrentUser(
-                id: user.id,
-                username: user.username,
-                email: user.email,
-                fullName: user.fullName,
-                bio: user.bio,
-                profileImageUrl: user.profileImageUrl
-            )
-        )
-    }
-    
+    @ObservedObject var currentUser: CurrentUser
+//    
+//    init(authService: AuthService, user: User){
+//        self.authService = authService
+//        self.user = user
+//    }
+//    
     var body: some View {
         TabView(selection: $selectedTab){
             FeedView()
@@ -38,7 +29,10 @@ struct MainTabView: View {
                         Text("Home")
                     }
                 }
-                .onAppear { selectedTab = 0 }
+                .onAppear {
+                    selectedTab = 0
+                    prevSelectedTab = 0
+                }
                 .tag(0)
             ExploreView()
                 .tabItem {
@@ -48,15 +42,20 @@ struct MainTabView: View {
                         Text("Friends")
                     }
                 }
-                .onAppear { selectedTab =  1}
+                .onAppear {
+                    selectedTab =  1
+                    prevSelectedTab = 0
+                }
                 .tag(1)
             
-            MediaSelectorView()
+            MediaSelectorView(selectedTab: $selectedTab, previousSelectedtab: $prevSelectedTab)
                 .tabItem {
                     Image(systemName: "plus")
                         .environment(\.symbolVariants, selectedTab == 2 ? .fill : .none)
                 }
-                .onAppear { selectedTab = 2 }
+                .onAppear {
+                    selectedTab = 2
+                }
                 .tag(2)
             
             NotificationsView()
@@ -67,7 +66,10 @@ struct MainTabView: View {
                         Text("Inbox")
                     }
                 }
-                .onAppear { selectedTab = 3 }
+                .onAppear {
+                    selectedTab = 3
+                    prevSelectedTab = 3
+                }
                 .tag(3)
             
             CurrentUserProfileView(authService: authService, currentUser: currentUser)
@@ -78,7 +80,10 @@ struct MainTabView: View {
                         Text("Profile")
                     }
                 }
-                .onAppear { selectedTab = 4 }
+                .onAppear {
+                    selectedTab = 4
+                    prevSelectedTab = 4
+                }
                 .tag(4)
         }
         .tint(.black)
@@ -87,6 +92,6 @@ struct MainTabView: View {
 }
 
 #Preview {
-    MainTabView(authService: AuthService(), user: DeveloperPreview.user)
+    MainTabView(authService: AuthService(), user: DeveloperPreview.user, currentUser: DeveloperPreview.currentUser)
 }
 

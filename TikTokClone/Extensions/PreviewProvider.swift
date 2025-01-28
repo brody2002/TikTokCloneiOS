@@ -30,4 +30,14 @@ struct DeveloperPreview {
         .init(id: NSUUID().uuidString, username: "sarah.graessley", email: "sarah@gmail.com", fullName: "Sarah Graessely"),
         .init(id: NSUUID().uuidString, username: "lauren.spellman", email: "lauren@gmail.com", fullName: "Lauren Spellman")
     ]
+    
+    static var post: Post = Post(
+        id: "somerandomPostID",
+        videoURL: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        user: "LebronJames",
+        caption: "Ima the goat",
+        likesAmount: "1023",
+        commentsAmount: "34",
+        savesAmount: "400"
+    )
 }

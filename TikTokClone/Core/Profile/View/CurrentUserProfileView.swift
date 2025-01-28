@@ -31,6 +31,7 @@ struct CurrentUserProfileView: View {
                 ToolbarItem(placement: .topBarTrailing){
                     Button("Sign Out"){
                         print("DEBUG: Sign out here...")
+                        clearCurrentUser()
                         authService.signOut()
                     }
                     .font(.subheadline)
@@ -38,6 +39,16 @@ struct CurrentUserProfileView: View {
                 }
             }
         }
+    }
+}
+extension CurrentUserProfileView {
+    private func clearCurrentUser(){
+        currentUser.fullName = ""
+        currentUser.email = ""
+        currentUser.username = ""
+        currentUser.id = ""
+        currentUser.bio = nil
+        currentUser.profileImageUrl = nil
     }
 }
 
