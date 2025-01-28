@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UploadPostView: View {
     @State private var caption = ""
+    @Environment(\.dismiss) var dismiss
     var body: some View {
         VStack{
             HStack(alignment: .top){
@@ -43,11 +44,12 @@ struct UploadPostView: View {
         .padding()
         .navigationTitle("Post")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
         .toolbar{
             ToolbarItem(placement: .topBarLeading){
                 Button(
                     action: {
-                        print("DEBUG: exit post view")
+                        dismiss()
                     },
                     label: {
                         Image(systemName: "lessthan")

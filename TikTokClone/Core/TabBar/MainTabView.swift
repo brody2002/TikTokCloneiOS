@@ -9,12 +9,23 @@ import SwiftUI
 
 struct MainTabView: View {
     @State private var selectedTab: Int = 0
-    private let authService: AuthService
-    private let user: User
+    let authService: AuthService
+    let user: User
+    @StateObject var currentUser: CurrentUser
     
     init(authService: AuthService, user: User){
         self.authService = authService
         self.user = user
+        self._currentUser = StateObject(
+            wrappedValue: CurrentUser(
+                id: user.id,
+                username: user.username,
+                email: user.email,
+                fullName: user.fullName,
+                bio: user.bio,
+                profileImageUrl: user.profileImageUrl
+            )
+        )
     }
     
     var body: some View {
@@ -59,7 +70,7 @@ struct MainTabView: View {
                 .onAppear { selectedTab = 3 }
                 .tag(3)
             
-            CurrentUserProfileView(authService: authService, user: user)
+            CurrentUserProfileView(authService: authService, currentUser: currentUser)
                 .tabItem {
                     VStack{
                         Image(systemName: "person")
@@ -72,8 +83,10 @@ struct MainTabView: View {
         }
         .tint(.black)
     }
+        
 }
 
 #Preview {
     MainTabView(authService: AuthService(), user: DeveloperPreview.user)
 }
+

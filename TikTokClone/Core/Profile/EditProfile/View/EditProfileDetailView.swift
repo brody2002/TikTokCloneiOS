@@ -12,7 +12,7 @@ struct EditProfileDetailView: View {
     @State private var value = ""
     
     let option: EditProfileOptions
-    let user: User
+    var user: CurrentUser
     
     var body: some View {
         VStack(alignment: .leading){
@@ -79,13 +79,24 @@ private extension EditProfileDetailView{
             value = user.username
         }
     }
+    
+    mutating func saveInfo(){
+        switch option {
+        case .name:
+            self.user.fullName = self.subtitle
+        case .bio:
+            self.user.bio = self.subtitle
+        case .username:
+            self.user.bio = self.subtitle
+        }
+    }
 }
 
 
 
 #Preview {
     NavigationStack{
-        EditProfileDetailView(option: .username, user: DeveloperPreview.user)
+        EditProfileDetailView(option: .username, user: DeveloperPreview.currentUser)
             .tint(.primary)
     }
     

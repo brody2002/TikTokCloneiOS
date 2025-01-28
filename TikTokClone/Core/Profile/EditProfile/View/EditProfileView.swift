@@ -15,12 +15,13 @@ struct EditProfileView: View {
     
     @Environment(\.dismiss) var dismiss
     @StateObject var manager = EditProfileManager(imageUploader: ImageUploader())
-    let user: User
+    @ObservedObject var currentUser: CurrentUser
+    
     var body: some View {
         NavigationStack{
             VStack{
                 PhotosPicker(selection: $selectedPickerItem, matching: .images){
-                    VStack{ // refresh
+                    VStack{
                         if let image = profileImage {
                             image
                                 .resizable()
@@ -28,7 +29,7 @@ struct EditProfileView: View {
                                 .frame(width: avatarSize.dimension, height: avatarSize.dimension)
                                 .clipShape(Circle())
                         } else {
-                            AvatarView(user: user, size: avatarSize)
+                            AvatarView(user: currentUser, size: avatarSize)
                         }
                         Text("Change photo")
                             .foregroundStyle(.black)
@@ -43,9 +44,9 @@ struct EditProfileView: View {
                         .foregroundStyle(Color(.systemGray2))
                         .fontWeight(.semibold)
                     
-                    EditProfileOptionRowView(option: EditProfileOptions.name, value: user.fullName)
-                    EditProfileOptionRowView(option:EditProfileOptions.username, value: user.username)
-                    EditProfileOptionRowView(option: EditProfileOptions.bio, value: user.bio ?? "Add a bio")
+                    EditProfileOptionRowView(option: EditProfileOptions.name, value: currentUser.fullName)
+                    EditProfileOptionRowView(option:EditProfileOptions.username, value: currentUser.username)
+                    EditProfileOptionRowView(option: EditProfileOptions.bio, value: currentUser.bio ?? "Add a bio")
                 }
                 .font(.subheadline)
                 .padding()
@@ -56,7 +57,8 @@ struct EditProfileView: View {
                 await loadImage(fromItem: selectedPickerItem)
             }
             .navigationDestination(for: EditProfileOptions.self, destination: { option in
-                EditProfileDetailView(option: option, user: user)
+                EditProfileDetailView(option: option, user: currentUser)
+                
             })
             .navigationTitle("Edit Profile")
             .navigationBarTitleDisplayMode(.inline)
@@ -76,6 +78,7 @@ struct EditProfileView: View {
                     .foregroundStyle(.black)
                 }
             }
+            .onAppear { print("imageURL STRING: \(currentUser.profileImageUrl ?? "nothing")")}
         }
     }
 }
@@ -88,13 +91,17 @@ private extension EditProfileView {
         self.uiImage = uiImage
         self.profileImage = Image(uiImage: uiImage)
     }
-    func onDoneTapped(){
+    func onDoneTapped() {
         Task {
-            guard let uiImage else { return }
-            await manager.uploadProfileImage(uiImage)
+            if let uiImage {
+                let imageUrl = await manager.uploadProfileImage(uiImage)
+                currentUser.profileImageUrl = imageUrl
+                print("done tapped: Image url: \(currentUser.profileImageUrl ?? "n/a")")
+            }
             dismiss()
         }
     }
+
     var avatarSize: AvatarSize {
         return .large
     }
@@ -102,5 +109,6 @@ private extension EditProfileView {
 
 
 #Preview {
-    EditProfileView(user: DeveloperPreview.user)
+    @Previewable @State var previewUser = DeveloperPreview.currentUser
+    EditProfileView(currentUser: previewUser)
 }

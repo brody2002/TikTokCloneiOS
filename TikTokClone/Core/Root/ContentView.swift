@@ -23,7 +23,7 @@ struct ContentView: View {
     var body: some View {
         Group {
             if viewModel.userSession != nil {
-                if let user = viewModel.currentUser { MainTabView(authService: authService, user: user) }
+                if let user = viewModel.currentUser { MainTabView(authService: authService, user: user)}
             } else {
                 // if someone isn't logged in
                 LoginView(authService: authService)

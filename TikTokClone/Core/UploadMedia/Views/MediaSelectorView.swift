@@ -19,25 +19,50 @@ struct MediaSelectorView: View{
                 if let mediaPreview {
                     CustomVideoPlayer(player: player)
                         .onAppear{
+                            print("VIDEO PLAYING")
                             player.replaceCurrentItem(with: .init(url: mediaPreview.url))
-                            player.play()
                         }
                         .padding()
                 }
             }
             .task(id: selectedItem){
-                print("doing something")
                 await loadMediaPreview(fromItem: selectedItem)
+                if selectedItem != nil { player.play()}
             }
             .navigationTitle("New Post")
             .navigationBarTitleDisplayMode(.inline)
-            .onAppear { showMediaPicker.toggle() }
+            .onAppear {
+                print("VIEW APPEARED")
+                if selectedItem == nil { showMediaPicker = true }
+            }
+            .onDisappear{
+                print("video disapeer")
+                player.replaceCurrentItem(with: nil) // Fully clear AVPlayer
+                player.pause()
+                mediaPreview = nil
+                selectedItem = nil
+            }
             .photosPicker(isPresented: $showMediaPicker, selection: $selectedItem, matching: .videos)
             .toolbar{
                 ToolbarItem(placement: .topBarTrailing){
-                    Button("Next"){
-                        print("DEBUG: Go to upload post...")
+                    NavigationLink {
+                        UploadPostView()
+                    } label: {
+                        Text("Next")
                     }
+
+                }
+            }
+            .onTapGesture {
+                switch player.timeControlStatus {
+                case .paused:
+                    player.play()
+                case .waitingToPlayAtSpecifiedRate:
+                    break
+                case .playing:
+                    player.pause()
+                @unknown default:
+                    break
                 }
             }
         }

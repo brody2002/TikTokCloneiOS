@@ -9,7 +9,15 @@ import Foundation
 
 // MOCK DATA:
 struct DeveloperPreview {
+    
     static var user = User(
+        id: NSUUID().uuidString,
+        username: "lebron_james",
+        email: "lebron@gmail.com",
+        fullName: "Lebron James"
+    )
+    
+    static var currentUser = CurrentUser(
         id: NSUUID().uuidString,
         username: "lebron_james",
         email: "lebron@gmail.com",

@@ -29,26 +29,7 @@ struct ProfileHeaderView: View {
                 UserStatView(value: 100, title: "Likes")
             }
             
-            //action Button
-            Button(
-                action:{
-                    showEditProfile.toggle()
-                },
-                label:{
-                    Text("Edit Profile")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .frame(width: 360, height: 32)
-                        .foregroundStyle(.black)
-                        .background(Color(.systemGray6))
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
-                }
-            )
-            
             Divider()
-        }
-        .fullScreenCover(isPresented: $showEditProfile) {
-            EditProfileView(user: user)
         }
     }
 }

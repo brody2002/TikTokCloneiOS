@@ -16,22 +16,24 @@ class EditProfileManager: ObservableObject {
         self.imageUploader = imageUploader
     }
     
-    func uploadProfileImage(_ uiImage: UIImage) async {
+    func uploadProfileImage(_ uiImage: UIImage) async -> String? {
         do {
-            let profileImageURL = try await imageUploader.uploadImage(image: uiImage)
-            try await updateUserProfileImageURL(profileImageURL)
+            let profileImageURL = try await imageUploader.uploadImage(image: uiImage) // ✅ Creates the URL
+            try await updateUserProfileImageURL(profileImageURL) // ✅ Updates Firebase
+            return profileImageURL // ✅ Return URL so EditProfileView can update `user`
         }
         catch {
             print("DEBUG: Handle image uploader error here...")
-            
+            return nil
         }
     }
+
     private func updateUserProfileImageURL(_ imageUrl: String?) async throws {
         guard let imageUrl else { return }
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
-        
         try await FirestoreConstants.UsersCollection.document(currentUid).updateData([
             "profileImageUrl": imageUrl
         ])
     }
+    
 }

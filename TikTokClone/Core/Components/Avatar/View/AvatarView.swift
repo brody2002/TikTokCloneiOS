@@ -10,7 +10,7 @@ import SwiftUI
 import Kingfisher // used to cache images instead of reloading everytime something comes in view
 
 struct AvatarView: View {
-    let user: User?
+    let user: UserType?
     let size: AvatarSize
     var body: some View {
         if let imageUrl = user?.profileImageUrl {
