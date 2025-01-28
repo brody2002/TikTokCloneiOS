@@ -41,6 +41,7 @@ struct CurrentUserProfileView: View {
         }
     }
 }
+
 extension CurrentUserProfileView {
     private func clearCurrentUser(){
         currentUser.fullName = ""

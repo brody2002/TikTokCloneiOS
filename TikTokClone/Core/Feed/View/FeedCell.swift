@@ -25,10 +25,12 @@ struct FeedCell: View {
                 Spacer()
                 HStack(alignment: .bottom){
                     VStack(alignment: .leading){
+                        //User
                         Text("\(post.user)")
                             .fontWeight(.semibold)
                         
-                        Text("\(post.caption)")
+                        //Caption
+                        optionTextHandlerView(inputData: post.caption)
                     }
                     .foregroundStyle(.white)
                     .font(.subheadline)
@@ -60,7 +62,7 @@ struct FeedCell: View {
                                     .frame(width: 28, height: 28)
                                     .foregroundStyle(.white)
                                 
-                                Text("\(post.likesAmount)")
+                                optionTextHandlerView(inputData: post.likesAmount)
                                     .font(.caption)
                                     .foregroundStyle(.white)
                                     .bold()
@@ -76,7 +78,7 @@ struct FeedCell: View {
                                     .frame(width: 28, height: 28)
                                     .foregroundStyle(.white)
                                 
-                                Text("\(post.commentsAmount)")
+                                optionTextHandlerView(inputData: post.commentsAmount)
                                     .font(.caption)
                                     .foregroundStyle(.white)
                                     .bold()
@@ -119,6 +121,18 @@ struct FeedCell: View {
             }
         }
     }
+}
+
+extension FeedCell {
+    
+    struct optionTextHandlerView: View {
+        var inputData: String?
+            var body: some View {
+                if let data = inputData{
+                    Text(data)
+                } else { Text("") }
+            }
+        }
 }
 
 #Preview {

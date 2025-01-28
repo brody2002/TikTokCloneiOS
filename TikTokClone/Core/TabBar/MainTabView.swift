@@ -13,12 +13,8 @@ struct MainTabView: View {
     let authService: AuthService
     let user: User
     @ObservedObject var currentUser: CurrentUser
-//    
-//    init(authService: AuthService, user: User){
-//        self.authService = authService
-//        self.user = user
-//    }
-//    
+    
+    
     var body: some View {
         TabView(selection: $selectedTab){
             FeedView()

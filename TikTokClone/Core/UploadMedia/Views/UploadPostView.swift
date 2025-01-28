@@ -14,7 +14,8 @@ struct UploadPostView: View {
     @State private var caption = ""
     @State private var imageID = UUID()
     @State private var selectedImage: UIImage?
-   
+    @ObservedObject private var uploadManager = UploadPostService(videoUploader: VideoUploader())
+    @State var postURL: URL?
     @Environment(\.dismiss) var dismiss
     
     let characterLimit: Int = 2200 // Plan to implement
@@ -23,22 +24,9 @@ struct UploadPostView: View {
             HStack(alignment: .top){
                 TextField("Enter your caption", text: $caption, axis: .vertical)
                 Spacer()
-                if let image = selectedImage {
-                    Image(uiImage: image)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 94, height: 140)
-                        .clipShape(.rect(cornerRadius: 10))
-                        .onAppear { print("DEBUG: SELECTED SHOWED")}
-                } else {
-                    Image("placeHolderImage")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 94, height: 140)
-                        .clipShape(.rect(cornerRadius: 10))
-                        .onAppear { print("DEBUG: DEFAULT SHOWED")}
-                }
                 
+                // Video Preview View
+                VideoPreview(selectedImage: selectedImage)
             }
             .id(selectedImage)
             Divider()
@@ -48,6 +36,10 @@ struct UploadPostView: View {
             Button(
                 action: {
                     print("DEBUG: upload post")
+                    Task {
+                        // Uploads Post
+                        await uploadManager.uploadPost(postURL ?? URL(fileURLWithPath: ""), caption: caption)
+                    }
                 },
                 label: {
                     Text("Post")
@@ -77,40 +69,35 @@ struct UploadPostView: View {
             }
         }
         .task { await loadImage()}
+        .onDisappear{ }
     }
 }
 
 extension UploadPostView {
+    
     private func loadImage() async {
         print("DEBUG: Running loadImage() function")
-
         do {
             // Load the video URL
-            guard let videoData = try await selectedItem.loadTransferable(type: Data.self) else {
-                print("DEBUG: NOTHING IS HAPPENING")
-                return
-            }
+            guard let videoData = try await selectedItem.loadTransferable(type: Data.self) else { return }
             
             // Save the video to a temporary file
-            let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension("mp4")
-            try videoData.write(to: tempURL)
+            postURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension("mp4")
+            print("DEBUG: from loadImage() postURL: \(postURL!)")
+            try videoData.write(to: postURL!)
             
             // Generate a thumbnail from the video
-            let thumbnail = await generateThumbnail(for: tempURL)
-            
+            let thumbnail = await generateThumbnail(for: postURL!)
             await MainActor.run {
                 self.selectedImage = thumbnail
                 self.imageID = UUID()
-                print("DEBUG: SELECTED IMAGE SET")
             }
-        } catch {
-            print("Error loading image: \(error)")
-        }
+        } catch { print("Error loading image: \(error)") }
     }
 
     /// Generates a thumbnail image from a video URL
     private func generateThumbnail(for url: URL) async -> UIImage? {
-        let asset = AVAsset(url: url)
+        let asset = AVURLAsset(url: url)
         let imageGenerator = AVAssetImageGenerator(asset: asset)
         imageGenerator.appliesPreferredTrackTransform = true
         
@@ -123,3 +110,6 @@ extension UploadPostView {
         }
     }
 }
+
+
+

@@ -20,14 +20,16 @@ struct Post: Identifiable, Codable {
     let user: String
     
     /// Caption or description provided by the user for the post.
-    let caption: String
+    let caption: String?
     
     /// The number of likes the post has received, represented as a string.
-    let likesAmount: String
+    let likesAmount: String?
     
     /// The number of comments on the post, represented as a string.
-    let commentsAmount: String
+    let commentsAmount: String?
     
     /// The number of times the post has been saved, represented as a string.
-    let savesAmount: String
+    let savesAmount: String?
+    
+    
 }

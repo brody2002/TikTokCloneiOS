@@ -24,7 +24,7 @@ struct ContentView: View {
         Group {
             if viewModel.userSession != nil {
                 if let user = viewModel.currentUser {
-                    @StateObject var currentUser = CurrentUser(
+                    @ObservedObject var currentUser = CurrentUser(
                         id: user.id,
                         username: user.username,
                         email: user.email,
