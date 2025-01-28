@@ -22,4 +22,15 @@ enum EditProfileOptions: Hashable {
             return "Bio"
         }
     }
+    
+    var firebaseTitle: String {
+        switch self {
+        case .name:
+            return "fullName"
+        case .username:
+            return "username"
+        case .bio:
+            return "bio"
+        }
+    }
 }

@@ -27,7 +27,9 @@ struct AvatarView: View {
                 .clipShape(Circle())
                 .foregroundStyle(Color(.systemGray4))
         }
+        
     }
+        
 }
 
 #Preview {

@@ -20,7 +20,17 @@ struct CurrentUserProfileHeaderView: View {
                 Text(currentUser.username)
                     .font(.subheadline)
                     .fontWeight(.semibold)
+                
+                if let bio = currentUser.bio {
+                    Text(bio)
+                        .font(.footnote)
+                        .frame(alignment: .leading)
+                }
             }
+            .id(currentUser.profileImageUrl)
+            .id(currentUser.bio)
+            .id(currentUser.username)
+            .id(currentUser.fullName)
             
             // Stats View
             HStack(spacing: 16){

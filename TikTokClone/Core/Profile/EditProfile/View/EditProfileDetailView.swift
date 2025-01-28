@@ -13,7 +13,7 @@ struct EditProfileDetailView: View {
     
     let option: EditProfileOptions
     var user: CurrentUser
-    
+    @ObservedObject var manager: EditProfileManager
     var body: some View {
         VStack(alignment: .leading){
             HStack{
@@ -49,7 +49,7 @@ struct EditProfileDetailView: View {
                 Button("Cancel"){ dismiss() }
             }
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Save"){ dismiss() }
+                Button("Save"){ Task{ await onSave() } }
                     .fontWeight(.semibold)
             }
         }
@@ -80,23 +80,36 @@ private extension EditProfileDetailView{
         }
     }
     
-    mutating func saveInfo(){
+    func onSave() async {
+        await saveInfo()
+        self.dismiss()
+    }
+    
+    private  func saveInfo() async{
         switch option {
         case .name:
-            self.user.fullName = self.subtitle
+            self.user.fullName = self.value
+            do { try await manager.updateProfileOption(newValue: self.value, option: .name) }
+            catch { print("error uploading name of firebase") }
         case .bio:
-            self.user.bio = self.subtitle
+            self.user.bio = self.value
+            do { try await manager.updateProfileOption(newValue: self.value, option: .bio) }
+            catch { print("error uploading bio of firebase") }
         case .username:
-            self.user.bio = self.subtitle
+            self.user.bio = self.value
+            do { try await manager.updateProfileOption(newValue: self.value, option: .username) }
+            catch { print("error uploading username of firebase") }
         }
     }
+    
+    
 }
 
 
 
 #Preview {
     NavigationStack{
-        EditProfileDetailView(option: .username, user: DeveloperPreview.currentUser)
+        EditProfileDetailView(option: .username, user: DeveloperPreview.currentUser, manager: EditProfileManager(imageUploader: ImageUploader()))
             .tint(.primary)
     }
     

@@ -57,7 +57,7 @@ struct EditProfileView: View {
                 await loadImage(fromItem: selectedPickerItem)
             }
             .navigationDestination(for: EditProfileOptions.self, destination: { option in
-                EditProfileDetailView(option: option, user: currentUser)
+                EditProfileDetailView(option: option, user: currentUser, manager: manager)
                 
             })
             .navigationTitle("Edit Profile")

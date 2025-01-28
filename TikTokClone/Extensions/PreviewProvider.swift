@@ -14,7 +14,8 @@ struct DeveloperPreview {
         id: NSUUID().uuidString,
         username: "lebron_james",
         email: "lebron@gmail.com",
-        fullName: "Lebron James"
+        fullName: "Lebron James",
+        bio: "Hello guys... It's me Lebron James"
     )
     
     static var currentUser = CurrentUser(
