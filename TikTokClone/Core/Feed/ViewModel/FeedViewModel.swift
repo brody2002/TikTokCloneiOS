@@ -6,9 +6,43 @@
 //
 
 import Foundation
+import FirebaseFirestore
+
+
 
 @Observable
 class FeedViewModel: ObservableObject {
+    var posts = [Post]() // Make it @Published so views update
+    init() {
+        fetchPosts()
+    }
+    func fetchPosts() {
+        FirestoreConstants.PostCollection
+            .getDocuments { snapshot, error in
+                if let error = error {
+                    print("Failed to fetch posts: \(error.localizedDescription)")
+                    return
+                }
+                guard let documents = snapshot?.documents else {
+                    print("No documents found.")
+                    return
+                }
+                // Print raw Firestore data
+                for doc in documents {
+                    print("Raw Document Data:", doc.data())
+                }
+                // NOTE DECODING DATA INTO STRUCT INCORRECTLY
+                // MUST MAKE THE SAME
+                DispatchQueue.main.async {
+                    self.posts = documents.compactMap { try? $0.data(as: Post.self) }
+                    print("Decoded Posts:", self.posts)
+                }
+            }
+    }
+}
+
+@Observable
+class MockFeedViewModel: ObservableObject {
     var posts = [Post]()
     let videoURLs = [
         "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
@@ -28,10 +62,10 @@ class FeedViewModel: ObservableObject {
     ]
     
     init(){
-        fetchPost()
+        fetchPosts()
     }
     
-    func fetchPost(){
+    func fetchPosts(){
         self.posts = [
             .init(
                 id: NSUUID().uuidString,

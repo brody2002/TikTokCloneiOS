@@ -37,8 +37,11 @@ class UploadPostService: ObservableObject {
             "postId": postId,
             "id": currentUid,
             "videoUrl": "\(videoUrl)",
-            "caption": caption
+            "caption": caption,
+            "timestamp": Date()
         ]
+        
+        
         // Uploads postData to firebase under postId
         try await FirestoreConstants.PostCollection.document(postId).setData(postData)
         
