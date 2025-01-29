@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct CurrentUserProfileView: View {
-    
+    let isCurrentUser: Bool = true
     let authService: AuthService
     @ObservedObject var currentUser: CurrentUser
+    var posts: [Post]?
     
     var body: some View {
         NavigationStack{
@@ -20,7 +21,7 @@ struct CurrentUserProfileView: View {
                     CurrentUserProfileHeaderView(currentUser: currentUser)
                     
                     // Posts grid view
-                    PostGridView()
+                    CurrentUserPostGridView()
                     
                 }
                 .padding(.top)

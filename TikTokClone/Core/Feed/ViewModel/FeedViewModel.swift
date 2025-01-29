@@ -12,180 +12,132 @@ import FirebaseFirestore
 
 @Observable
 class FeedViewModel: ObservableObject {
-    var posts = [Post]() // Make it @Published so views update
+    var posts = [Post]()
     init() {
         fetchPosts()
     }
-    func fetchPosts() {
-        FirestoreConstants.PostCollection
-            .getDocuments { snapshot, error in
-                if let error = error {
-                    print("Failed to fetch posts: \(error.localizedDescription)")
-                    return
+    /// Fetches posts from Firestore
+        func fetchPosts() {
+            FirestoreConstants.PostCollection
+                .order(by: "timestamp", descending: true)
+                .getDocuments { snapshot, error in
+                    if let error = error {
+                        print("⚠️ Failed to fetch posts: \(error.localizedDescription)")
+                        return
+                    }
+                    
+                    guard let documents = snapshot?.documents else {
+                        print("⚠️ No documents found.")
+                        return
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self.posts = documents.compactMap { try? $0.data(as: Post.self) }
+                        print("📜 Decoded Posts:", self.posts)
+                        
+                        // Username Fetch func
+                        self.fetchPostsUsernames()
+                    }
                 }
-                guard let documents = snapshot?.documents else {
-                    print("No documents found.")
-                    return
-                }
-                // Print raw Firestore data
-                for doc in documents {
-                    print("Raw Document Data:", doc.data())
-                }
-                // NOTE DECODING DATA INTO STRUCT INCORRECTLY
-                // MUST MAKE THE SAME
-                DispatchQueue.main.async {
-                    self.posts = documents.compactMap { try? $0.data(as: Post.self) }
-                    print("Decoded Posts:", self.posts)
+        }
+
+        private func fetchPostsUsernames() {
+            var updatedPosts = self.posts
+            let group = DispatchGroup() // Used to track all async requests
+            
+            for (index, post) in self.posts.enumerated() {
+                group.enter() // Track async task
+                fetchUsername(for: post.userId) { username in
+                    DispatchQueue.main.async { updatedPosts[index].username = username }
+                    group.leave() // Mark task as complete
                 }
             }
-    }
+            
+            group.notify(queue: .main) {
+                // Update state only once after all usernames are fetched
+                self.posts = updatedPosts
+                print("✅ Updated posts with usernames:", self.posts)
+            }
+        }
+
+        /// Fetches a username from Firestore using a `userId`
+        private func fetchUsername(for userId: String, completion: @escaping (String) -> Void) {
+            let unknownName = "unknownName"
+            FirestoreConstants.UsersCollection.document(userId).getDocument { snapshot, error in
+                if let error = error {
+                    print("⚠️ Error fetching username: \(error.localizedDescription)")
+                    completion(unknownName)
+                    return
+                }
+                if let data = snapshot?.data(), let username = data["username"] as? String {
+                    completion(username)
+                } else {
+                    completion(unknownName)
+                }
+            }
+        }
 }
 
-@Observable
-class MockFeedViewModel: ObservableObject {
-    var posts = [Post]()
-    let videoURLs = [
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
-        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4",
-        
-    ]
-    
-    init(){
-        fetchPosts()
-    }
-    
-    func fetchPosts(){
-        self.posts = [
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[0],
-                user: "LeBron James",
-                caption: "Im the goat",
-                likesAmount: "1200",
-                commentsAmount: "250",
-                savesAmount: "600"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[1],
-                user: "MoneyMan33",
-                caption: "MoneyMan dont play with this shiet",
-                likesAmount: "5400",
-                commentsAmount: "180",
-                savesAmount: "900"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[2],
-                user: "Ghandi73-23",
-                caption: "PEACE... PEACE IS LOVE. WORD",
-                likesAmount: "3100",
-                commentsAmount: "300",
-                savesAmount: "750"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[3],
-                user: "TheTrainMan",
-                caption: "WOOT TOOOT",
-                likesAmount: "8900",
-                commentsAmount: "500",
-                savesAmount: "1200"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[4],
-                user: "OtterLife33",
-                caption: "I miss pookie wookie",
-                likesAmount: "6700",
-                commentsAmount: "220",
-                savesAmount: "980"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[5],
-                user: "Sarah Graessley",
-                caption: "Im the goat",
-                likesAmount: "4500",
-                commentsAmount: "190",
-                savesAmount: "870"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[6],
-                user: "Kanye West",
-                caption: "Im the goat",
-                likesAmount: "3200",
-                commentsAmount: "160",
-                savesAmount: "740"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[7],
-                user: "Kai Roberts",
-                caption: "Ima earth spritit main",
-                likesAmount: "7600",
-                commentsAmount: "280",
-                savesAmount: "1000"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[8],
-                user: "BunnyObama",
-                caption: "ima bunny",
-                likesAmount: "9500",
-                commentsAmount: "400",
-                savesAmount: "1300"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[9],
-                user: "TheMilfInYourLocalArea",
-                caption: "I want to fuck you",
-                likesAmount: "8200",
-                commentsAmount: "320",
-                savesAmount: "1100"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[10],
-                user: "pokemonMASTABAITER",
-                caption: "ima catch them all",
-                likesAmount: "8700",
-                commentsAmount: "260",
-                savesAmount: "1050"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[11],
-                user: "Keanu Reeves",
-                caption: "im in cyber punk",
-                likesAmount: "9200",
-                commentsAmount: "350",
-                savesAmount: "1250"
-            ),
-            .init(
-                id: NSUUID().uuidString,
-                videoURL: videoURLs[12],
-                user: "Drake",
-                caption: "Im the goat",
-                likesAmount: "7800",
-                commentsAmount: "290",
-                savesAmount: "970"
-            )
-            ]
-    }
-                  
-                  
-}
+
+//
+//@Observable
+//class MockFeedViewModel: ObservableObject {
+//    var posts = [Post]()
+//    let videoURLs = [
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WeAreGoingOnBullrun.mp4",
+//        "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4",
+//        
+//    ]
+//    
+//    init(){
+//        fetchPosts()
+//    }
+//    
+//    func fetchPosts(){
+//        self.posts = [
+//            .init(
+//                id: NSUUID().uuidString,
+//                userId: "38sbsefhsefh",
+//                videoURL: videoURLs[0],
+//                timestamp: "2025-02-10 02:10:23",
+//                caption: "That's Arbol",
+//                likesAmount: 123,
+//                commentsAmount: 33,
+//                savesAmount: 1000
+//            ),
+//            .init(
+//                id: NSUUID().uuidString,
+//                userId: "awdkawkakwdkawd",
+//                videoURL: videoURLs[1],
+//                timestamp: "2025-01-11 04:10:4",
+//                caption: "REMY BOYS",
+//                likesAmount: 10,
+//                commentsAmount: 3,
+//                savesAmount: 1
+//            ),
+//            .init(
+//                id: NSUUID().uuidString,
+//                userId: "sefsehsefhs",
+//                videoURL: videoURLs[2],
+//                timestamp: "2024-12-03 12:33:10",
+//                caption: "TTV clip of the century",
+//                likesAmount: 100,
+//                commentsAmount: 7,
+//                savesAmount: 2
+//            )
+//            ]
+//    }
+//                  
+//                  
+//}

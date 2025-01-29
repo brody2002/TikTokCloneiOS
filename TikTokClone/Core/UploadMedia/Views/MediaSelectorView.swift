@@ -75,12 +75,10 @@ struct MediaSelectorView: View{
                 }
             }
             .onChange(of: showMediaPicker){ _, showMediaPickerBool in
-                print("DEBUG: showMediaPickerBool \(showMediaPickerBool) selectedItem: \(selectedItem) uploadVideoState.isVideoPosted: \(uploadVideoState.isVideoPosted)")
                 if showMediaPickerBool == false && selectedItem == nil {
                     selectedTab = previousSelectedtab
                 }
                 else if showMediaPickerBool == true && selectedItem == nil && uploadVideoState.isVideoPosted == true {
-                    print("DEBUG: ENTERD SHITLIST")
                     showMediaPicker = false
                     uploadVideoState.isVideoPosted = false
                     selectedTab = previousSelectedtab

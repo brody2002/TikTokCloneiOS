@@ -11,29 +11,37 @@ import Foundation
 struct Post: Identifiable, Codable {
     /// Unique identifier for the post.
     let id: String
+    ///  UserID of the person who uploaded the post
+    let userId: String
     /// URL of the video associated with the post.
     let videoURL: String
-    /// Username of the user who created the post.
-    let user: String
+    /// Time the post was uploaded
+    let timestamp: String
     /// Caption or description provided by the user for the post.
-    let caption: String?
+    var caption: String
     /// The number of likes the post has received, represented as a string.
-    let likesAmount: String?
+    var likesAmount: Int
     /// The number of comments on the post, represented as a string.
-    let commentsAmount: String?
+    var commentsAmount: Int
     /// The number of times the post has been saved, represented as a string.
-    let savesAmount: String?
+    var savesAmount: Int
+    /// Username of the uploader: Isn't set initally but set in the FeedViewModel of this app
+    var username: String?
     
     enum CodingKeys: String, CodingKey {
-            case id
-            case videoURL = "videoUrl"
-            case user = "username"
-            case caption
-        
-            case likesAmount
-            case commentsAmount
-            case savesAmount
-        }
-    
-    
+        // Strings
+        case id = "postId"
+        case userId = "id"
+        case videoURL = "videoUrl"
+        case timestamp
+        // String?
+        case caption
+        // Ints
+        case likesAmount
+        case commentsAmount
+        case savesAmount
+        case username
+    }
 }
+
+

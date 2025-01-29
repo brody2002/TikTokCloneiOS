@@ -11,6 +11,8 @@ import AVKit
 struct FeedCell: View {
     let post: Post
     var player: AVPlayer
+    var pub = NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)
+
     
     init(post: Post, player: AVPlayer) {
         self.post = post
@@ -26,31 +28,43 @@ struct FeedCell: View {
                 HStack(alignment: .bottom){
                     VStack(alignment: .leading){
                         //User
-                        Text("\(post.user)")
+                        Text(post.username ?? "unknownUsername")
                             .fontWeight(.semibold)
                         
                         //Caption
-                        optionTextHandlerView(inputData: post.caption)
+                        Text(post.caption)
                     }
                     .foregroundStyle(.white)
                     .font(.subheadline)
                     Spacer()
                     VStack(spacing: 28){
                         
-                        ZStack{
-                            Circle()
-                                .frame(width: 48, height: 48)
-                                .foregroundStyle(.gray)
-                            ZStack{
-                                Circle()
-                                    .frame(width: 20, height: 20)
-                                    .foregroundStyle(.pink)
-                                Image(systemName: "plus")
-                                    .resizable()
-                                    .frame(width: 12, height: 12)
+                        Button(
+                            action:{
+                                // Go to Post's Porfile View
+                                print("DEBUG: go to Post's profile view")
+                            },
+                            label:{
+                                ZStack{
+                                    Circle()
+                                        .frame(width: 48, height: 48)
+                                        .foregroundStyle(.gray)
+                                    Circle()
+                                        .stroke(style: StrokeStyle(lineWidth: 1))
+                                        .frame(width: 48, height: 48)
+                                        .foregroundStyle(.white)
+                                    ZStack{
+                                        Circle()
+                                            .frame(width: 20, height: 20)
+                                            .foregroundStyle(.pink)
+                                        Image(systemName: "plus")
+                                            .resizable()
+                                            .frame(width: 12, height: 12)
+                                    }
+                                    .offset(y: 20)
+                                }
                             }
-                            .offset(y: 20)
-                        }
+                        )
                         
                         
                         Button(action:{
@@ -62,7 +76,7 @@ struct FeedCell: View {
                                     .frame(width: 28, height: 28)
                                     .foregroundStyle(.white)
                                 
-                                optionTextHandlerView(inputData: post.likesAmount)
+                                PostNumericsHandler(inputData: post.likesAmount)
                                     .font(.caption)
                                     .foregroundStyle(.white)
                                     .bold()
@@ -78,7 +92,7 @@ struct FeedCell: View {
                                     .frame(width: 28, height: 28)
                                     .foregroundStyle(.white)
                                 
-                                optionTextHandlerView(inputData: post.commentsAmount)
+                                PostNumericsHandler(inputData: post.commentsAmount)
                                     .font(.caption)
                                     .foregroundStyle(.white)
                                     .bold()
@@ -120,16 +134,20 @@ struct FeedCell: View {
                 break
             }
         }
+        .onReceive(pub) { (output) in
+            player.seek(to: .zero)
+            player.play()
+        }
     }
 }
 
 extension FeedCell {
     
-    struct optionTextHandlerView: View {
-        var inputData: String?
+    struct PostNumericsHandler: View {
+        var inputData: Int
             var body: some View {
-                if let data = inputData{
-                    Text(data)
+                if inputData > 0{
+                    Text("\(inputData)")
                 } else { Text("") }
             }
         }

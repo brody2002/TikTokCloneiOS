@@ -27,20 +27,23 @@ class UploadPostService: ObservableObject {
         }
     }
     
-    // Needs to capture postId as well as make a function that can add multiple post ids, 
     func updateUserPostDict(_ videoUrl: String?, caption: String) async throws {
         guard let videoUrl else { return }
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
+//        let timeStamp = formatDate()
+        
         let postId = NSUUID().uuidString
         let postData: [String: Any] = [
             "postId": postId,
-            "id": currentUid,
+            "id": currentUid, // userId
             "videoUrl": "\(videoUrl)",
+            "timestamp": Firebase.ServerValue.timestamp(),
             "caption": caption,
-            "timestamp": Date()
+            "likesAmount": 0,
+            "commentsAmount": 0,
+            "savesAmount": 0
         ]
-        
         
         // Uploads postData to firebase under postId
         try await FirestoreConstants.PostCollection.document(postId).setData(postData)
@@ -49,6 +52,13 @@ class UploadPostService: ObservableObject {
         try await FirestoreConstants.UsersCollection.document(currentUid).updateData([
             "postIds": FieldValue.arrayUnion([postId])
         ])
+    }
+    
+    func formatDate() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss" 
+        let dateString = formatter.string(from: Date())
+        return dateString
     }
     
 }

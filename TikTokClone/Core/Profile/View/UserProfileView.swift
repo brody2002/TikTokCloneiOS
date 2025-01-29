@@ -9,6 +9,7 @@ import SwiftUI
 
 struct UserProfileView: View {
     let user: User
+    let isCurrentUser: Bool = false
     var body: some View {
         ScrollView{
             VStack(spacing: 2){
@@ -16,11 +17,13 @@ struct UserProfileView: View {
                 ProfileHeaderView(user: user)
                 
                 // Posts grid view
-                PostGridView()
+                PostGridView(user: user)
                 
             }
             .padding(.top)
         }
+        .navigationTitle("\(user.fullName)")
+        .navigationBarTitleDisplayMode(.inline)
         
     }
 }

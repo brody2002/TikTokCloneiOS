@@ -1,0 +1,5 @@
+
+Bugs:
+1. Date in the post data in firebase can't be sorted. Find a better way to store the data
+2. Posts don't have usernames since Post doesnt upload with username data.
+    find a way to fetch the username

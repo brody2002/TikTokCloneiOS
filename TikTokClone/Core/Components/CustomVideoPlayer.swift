@@ -22,8 +22,7 @@ struct CustomVideoPlayer: UIViewControllerRepresentable {
         controller.videoGravity = .resizeAspectFill // makes video full screen
         controller.allowsVideoFrameAnalysis = false
         controller.requiresLinearPlayback = true
-        
-        
+
         return controller
     }
     

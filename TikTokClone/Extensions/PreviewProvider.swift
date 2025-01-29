@@ -25,19 +25,41 @@ struct DeveloperPreview {
         fullName: "Lebron James"
     )
     static var users: [User] = [
-        .init(id: NSUUID().uuidString, username: "EarhSpirtitMeeiiin", email: "kairoberts@gmail.com", fullName: "Kai Roberts"),
-        .init(id: NSUUID().uuidString, username: "brody.roberts", email: "brody@gmail.com", fullName: "Brody Roberts"),
-        .init(id: NSUUID().uuidString, username: "sarah.graessley", email: "sarah@gmail.com", fullName: "Sarah Graessely"),
-        .init(id: NSUUID().uuidString, username: "lauren.spellman", email: "lauren@gmail.com", fullName: "Lauren Spellman")
+        .init(
+            id: NSUUID().uuidString,
+            username: "EarhSpirtitMeeiiin",
+            email: "kairoberts@gmail.com",
+            fullName: "Kai Roberts"
+        ),
+        .init(
+            id: NSUUID().uuidString,
+            username: "brody.roberts",
+            email: "brody@gmail.com",
+            fullName: "Brody Roberts"
+        ),
+        .init(
+            id: NSUUID().uuidString,
+            username: "sarah.graessley",
+            email: "sarah@gmail.com",
+            fullName: "Sarah Graessely"
+        ),
+        .init(
+            id: NSUUID().uuidString,
+            username: "lauren.spellman",
+            email: "lauren@gmail.com",
+            fullName: "Lauren Spellman"
+        )
     ]
     
     static var post: Post = Post(
-        id: "somerandomPostID",
-        videoURL: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
-        user: "LebronJames",
-        caption: "Ima the goat",
-        likesAmount: "1023",
-        commentsAmount: "34",
-        savesAmount: "400"
+            id: NSUUID().uuidString,
+            userId: "38sbsefhsefh",
+            videoURL: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            timestamp: "2025-02-10 02:10:23",
+            caption: "That's Arbol",
+            likesAmount: 123,
+            commentsAmount: 33,
+            savesAmount: 1000,
+            username: nil
     )
 }

@@ -42,7 +42,6 @@ struct UploadPostView: View {
                         await uploadManager.uploadPost(postURL ?? URL(fileURLWithPath: ""), caption: caption)
                         try FileManager.default.removeItem(at: postURL!)
                         await MainActor.run {
-                            print("hi")
                             uploadVideoState.isVideoPosted = true
                             dismiss()
                         }
