@@ -10,12 +10,25 @@ import SwiftUI
 
 struct ExploreView: View{
     @StateObject var viewModel = ExploreViewModel(userService: UserService())
+    @State var searchText: String = ""
+    
+    private var filteredUsers: [User] {
+        if searchText.isEmpty { return [] } else {
+            return viewModel.users.filter {
+                $0.username.localizedCaseInsensitiveContains(searchText) ||
+                $0.fullName.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
     
     var body: some View{
         NavigationStack{
+            SearchBarView(text: $searchText)
+                .padding(.horizontal)
+                .padding(.top, 4)
             ScrollView{
                 LazyVStack(spacing: 16){
-                    ForEach(viewModel.users){ user in
+                    ForEach(filteredUsers){ user in
                         NavigationLink(value: user){
                             UserCell(user: user)
                         }
@@ -23,6 +36,7 @@ struct ExploreView: View{
                 }
                 
             }
+        
             .navigationDestination(for: User.self, destination: { user in
                 UserProfileView(user: user)
             })
@@ -35,6 +49,8 @@ struct ExploreView: View{
 }
 
 #Preview{
-    ExploreView()
+    NavigationStack{
+        ExploreView()
+    }
 }
 
