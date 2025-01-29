@@ -10,9 +10,7 @@ import AVKit
 import PhotosUI
 
 struct Movie: Transferable {
-    
     let url: URL
-    
     static var transferRepresentation: some TransferRepresentation {
         FileRepresentation(contentType: .movie) { movie in
             SentTransferredFile(movie.url)

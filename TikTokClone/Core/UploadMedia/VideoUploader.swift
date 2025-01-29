@@ -23,23 +23,15 @@ struct VideoUploader {
     func uploadVideo(videoURL: URL) async throws -> String? {
         let filename = NSUUID().uuidString + ".mp4" // new file name
         let ref = Storage.storage().reference(withPath: "/videos/\(filename)")
-        print("DEBUG: from uploadVideo() videoUrl: \(videoURL)")
         do {
             let videoData = try Data(contentsOf: videoURL)
-            print("DEBUG: videoData made")
             let _ = try await ref.putDataAsync(videoData)
-            print("DEBUG: putDataAsync")
             let url = try await ref.downloadURL()
-            print("DEBUG: url made \(url)")
             return url.absoluteString
         } catch {
             print("DEBUG: Failed to upload video with error: \(error)")
             return nil
         }
     }
-    
-    
-    
-    
 }
 

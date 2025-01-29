@@ -15,6 +15,7 @@ struct UploadPostView: View {
     @State private var imageID = UUID()
     @State private var selectedImage: UIImage?
     @ObservedObject private var uploadManager = UploadPostService(videoUploader: VideoUploader())
+    @ObservedObject var uploadVideoState: UploadVideoState
     @State var postURL: URL?
     @Environment(\.dismiss) var dismiss
     
@@ -39,6 +40,12 @@ struct UploadPostView: View {
                     Task {
                         // Uploads Post
                         await uploadManager.uploadPost(postURL ?? URL(fileURLWithPath: ""), caption: caption)
+                        try FileManager.default.removeItem(at: postURL!)
+                        await MainActor.run {
+                            print("hi")
+                            uploadVideoState.isVideoPosted = true
+                            dismiss()
+                        }
                     }
                 },
                 label: {

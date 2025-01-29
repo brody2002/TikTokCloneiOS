@@ -20,9 +20,7 @@ class UploadPostService: ObservableObject {
     
     func uploadPost(_ inputUrl: URL, caption: String) async {
         do {
-            print("DEBUG: inputUrl \(inputUrl)")
             let postUrl = try await videoUploader.uploadVideo(videoURL: inputUrl) // returns firebase url
-            print("DEBUG: postURL: \(postUrl ?? "No Url")")
             try await updateUserPostDict(postUrl, caption: caption)
         } catch {
             print("DEBUG: Handle video uploader error here...")

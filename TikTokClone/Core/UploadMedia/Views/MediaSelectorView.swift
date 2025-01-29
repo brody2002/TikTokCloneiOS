@@ -13,11 +13,15 @@ struct MediaSelectorView: View{
     @State private var selectedItem: PhotosPickerItem?
     @State private var player = AVPlayer()
     @State private var mediaPreview: Movie?
+    @State var navPath = NavigationPath()
     
     @Binding var selectedTab: Int
     @Binding var previousSelectedtab: Int
+    
+    @ObservedObject var uploadVideoState: UploadVideoState
+    
     var body: some View{
-        NavigationStack{
+        NavigationStack(){
             VStack{
                 if let mediaPreview {
                     CustomVideoPlayer(player: player)
@@ -48,7 +52,7 @@ struct MediaSelectorView: View{
                 ToolbarItem(placement: .topBarTrailing) {
                     if let unwrappedItem = selectedItem {
                         NavigationLink {
-                            UploadPostView(selectedItem: unwrappedItem)
+                            UploadPostView(selectedItem: unwrappedItem, uploadVideoState: uploadVideoState)
                         } label: {
                             Text("Next")
                         }
@@ -71,9 +75,17 @@ struct MediaSelectorView: View{
                 }
             }
             .onChange(of: showMediaPicker){ _, showMediaPickerBool in
+                print("DEBUG: showMediaPickerBool \(showMediaPickerBool) selectedItem: \(selectedItem) uploadVideoState.isVideoPosted: \(uploadVideoState.isVideoPosted)")
                 if showMediaPickerBool == false && selectedItem == nil {
                     selectedTab = previousSelectedtab
                 }
+                else if showMediaPickerBool == true && selectedItem == nil && uploadVideoState.isVideoPosted == true {
+                    print("DEBUG: ENTERD SHITLIST")
+                    showMediaPicker = false
+                    uploadVideoState.isVideoPosted = false
+                    selectedTab = previousSelectedtab
+                }
+                
                 
             }
         }
@@ -90,5 +102,5 @@ private extension MediaSelectorView {
 }
 
 #Preview {
-    MediaSelectorView(selectedTab: .constant(2), previousSelectedtab: .constant(1))
+    MediaSelectorView(selectedTab: .constant(2), previousSelectedtab: .constant(1), uploadVideoState: UploadVideoState(isVideoPosted: false))
 }

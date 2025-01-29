@@ -12,6 +12,7 @@ struct MainTabView: View {
     @State private var prevSelectedTab: Int = 0
     let authService: AuthService
     let user: User
+    @StateObject var uploadVideoState = UploadVideoState(isVideoPosted: false)
     @ObservedObject var currentUser: CurrentUser
     
     
@@ -44,7 +45,11 @@ struct MainTabView: View {
                 }
                 .tag(1)
             
-            MediaSelectorView(selectedTab: $selectedTab, previousSelectedtab: $prevSelectedTab)
+            MediaSelectorView(
+                selectedTab: $selectedTab,
+                previousSelectedtab: $prevSelectedTab,
+                uploadVideoState: uploadVideoState
+            )
                 .tabItem {
                     Image(systemName: "plus")
                         .environment(\.symbolVariants, selectedTab == 2 ? .fill : .none)
