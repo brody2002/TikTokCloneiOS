@@ -31,14 +31,14 @@ class UploadPostService: ObservableObject {
         guard let videoUrl else { return }
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-//        let timeStamp = formatDate()
+        let timeStamp = formatDate()
         
         let postId = NSUUID().uuidString
         let postData: [String: Any] = [
             "postId": postId,
             "id": currentUid, // userId
             "videoUrl": "\(videoUrl)",
-            "timestamp": Firebase.ServerValue.timestamp(),
+            "timestamp": timeStamp,
             "caption": caption,
             "likesAmount": 0,
             "commentsAmount": 0,

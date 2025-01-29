@@ -5,10 +5,14 @@
 //
 
 import SwiftUI
+import AVKit
 
 struct CurrentUserPostGridView: View {
+    @State private var player = AVPlayer()
     @StateObject var viewModel: PostGridViewModel
     @State var fetchedPosts: [Post]?
+    
+    @Namespace private var zoomNameSpace
     
     init(){
         self._viewModel = StateObject(wrappedValue: PostGridViewModel(userService: UserService()))
@@ -30,16 +34,15 @@ struct CurrentUserPostGridView: View {
             if let posts = fetchedPosts {
                 ForEach(posts) { post in
                     NavigationLink {
-                        Text("\(post.id)")
+                        CurrentUserPostGridFeedView(sourcePost: post, posts: posts)
+                            .navigationTransition(.zoom(sourceID: "\(post.id)", in: zoomNameSpace))
+                            .ignoresSafeArea()
                     } label: {
                         Rectangle()
                             .frame(width: width, height: 160)
                             .clipped()
+                            .matchedTransitionSource(id: "\(post.id)", in: zoomNameSpace)
                     }
-//                    Rectangle()
-//                        .frame(width: width, height: 160)
-//                        .clipped()
-
                 }
             }
             

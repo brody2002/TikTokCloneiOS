@@ -11,7 +11,6 @@ import AVKit
 struct FeedCell: View {
     let post: Post
     var player: AVPlayer
-    var pub = NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)
 
     
     init(post: Post, player: AVPlayer) {
@@ -134,10 +133,7 @@ struct FeedCell: View {
                 break
             }
         }
-        .onReceive(pub) { (output) in
-            player.seek(to: .zero)
-            player.play()
-        }
+        
     }
 }
 
