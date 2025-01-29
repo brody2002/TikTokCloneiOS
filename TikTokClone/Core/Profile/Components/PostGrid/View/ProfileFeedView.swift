@@ -5,19 +5,11 @@
 //  Created by Brody on 1/29/25.
 //
 
-import SwiftUI
-
-//
-//  FeedView.swift
-//  TikTokClone
-//
-//  Created by Brody on 1/22/25.
-//
 
 import SwiftUI
 import AVKit
 
-struct CurrentUserPostGridFeedView: View {
+struct ProfileFeedView: View {
     @State private var scrollPosition: String?
     @State var sourcePost: Post
     @State private var player = AVPlayer()
@@ -53,10 +45,6 @@ struct CurrentUserPostGridFeedView: View {
     }
     
     func playInitialViideoIfNecessary(){
-//        guard
-//            scrollPosition == nil,
-//            let post = posts.first,
-//            player.currentItem == nil else { return }
         scrollPosition = sourcePost.id
         let item = AVPlayerItem(url: URL(string: sourcePost.videoURL)!)
         player.replaceCurrentItem(with: item)

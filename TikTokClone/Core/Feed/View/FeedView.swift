@@ -59,6 +59,10 @@ struct FeedView: View {
         // if player is paused
         if player.rate == 0 { player.play() }
     }
+    
+    func refreshView() {
+        // Refresh the video that have been received
+    }
 }
 
 #Preview {

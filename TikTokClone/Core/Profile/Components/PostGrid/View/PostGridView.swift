@@ -12,6 +12,8 @@ struct PostGridView: View {
     @State var fetchedPosts: [Post]?
     let user: User
     
+    @Namespace private var zoomNameSpace
+    
     init(user: User){
         self._viewModel = StateObject(wrappedValue: PostGridViewModel(userService: UserService()))
         self.user = user
@@ -33,11 +35,14 @@ struct PostGridView: View {
             if let posts = fetchedPosts {
                 ForEach(posts) { post in
                     NavigationLink {
-                        Text("\(post.id)")
+                        ProfileFeedView(sourcePost: post, posts: posts)
+                            .navigationTransition(.zoom(sourceID: "\(post.id)", in: zoomNameSpace))
+                            .ignoresSafeArea()
                     } label: {
                         Rectangle()
                             .frame(width: width, height: 160)
                             .clipped()
+                            .matchedTransitionSource(id: "\(post.id)", in: zoomNameSpace)
                     }
 
                 }

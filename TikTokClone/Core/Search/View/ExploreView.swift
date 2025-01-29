@@ -13,7 +13,7 @@ struct ExploreView: View{
     @State var searchText: String = ""
     
     private var filteredUsers: [User] {
-        if searchText.isEmpty { return [] } else {
+        if searchText.isEmpty { return viewModel.users } else {
             return viewModel.users.filter {
                 $0.username.localizedCaseInsensitiveContains(searchText) ||
                 $0.fullName.localizedCaseInsensitiveContains(searchText)

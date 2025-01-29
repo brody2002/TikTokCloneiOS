@@ -6,7 +6,7 @@
 
 import SwiftUI
 import AVKit
-
+//hello
 struct CurrentUserPostGridView: View {
     @State private var player = AVPlayer()
     @StateObject var viewModel: PostGridViewModel
@@ -34,7 +34,7 @@ struct CurrentUserPostGridView: View {
             if let posts = fetchedPosts {
                 ForEach(posts) { post in
                     NavigationLink {
-                        CurrentUserPostGridFeedView(sourcePost: post, posts: posts)
+                        ProfileFeedView(sourcePost: post, posts: posts)
                             .navigationTransition(.zoom(sourceID: "\(post.id)", in: zoomNameSpace))
                             .ignoresSafeArea()
                     } label: {
