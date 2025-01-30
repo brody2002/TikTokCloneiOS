@@ -14,17 +14,15 @@ struct MainTabView: View {
     let user: User
     @StateObject var uploadVideoState = UploadVideoState(isVideoPosted: false)
     @ObservedObject var currentUser: CurrentUser
-    @State var refreshViewTrigger = UUID()
-    
-    
+    @State var refreshFeedView: Bool = false // Trigger to refresh FeedView content
+
     var body: some View {
-        ZStack{
+        ZStack {
             Color.black.ignoresSafeArea()
-            TabView(selection: $selectedTab.onUpdate(handleTabChange)){
-                FeedView()
-                    .id(refreshViewTrigger)
+            TabView(selection: $selectedTab.onUpdate(handleTabChange)) {
+                FeedView(refreshFeedView: $refreshFeedView) // Pass the binding to FeedView
                     .tabItem {
-                        VStack{
+                        VStack {
                             Image(systemName: "house")
                                 .environment(\.symbolVariants, selectedTab == 0 ? .fill : .none)
                             Text("Home")
@@ -32,9 +30,10 @@ struct MainTabView: View {
                     }
                     .onAppear { setTabs(0) }
                     .tag(0)
+
                 ExploreView()
                     .tabItem {
-                        VStack{
+                        VStack {
                             Image(systemName: "person.2")
                                 .environment(\.symbolVariants, selectedTab == 1 ? .fill : .none)
                             Text("Friends")
@@ -42,7 +41,7 @@ struct MainTabView: View {
                     }
                     .onAppear { setTabs(1) }
                     .tag(1)
-                
+
                 MediaSelectorView(
                     selectedTab: $selectedTab,
                     previousSelectedtab: $prevSelectedTab,
@@ -54,10 +53,10 @@ struct MainTabView: View {
                 }
                 .onAppear { selectedTab = 2 }
                 .tag(2)
-                
+
                 NotificationsView()
                     .tabItem {
-                        VStack{
+                        VStack {
                             Image(systemName: "ellipsis.message")
                                 .environment(\.symbolVariants, selectedTab == 3 ? .fill : .none)
                             Text("Inbox")
@@ -65,10 +64,10 @@ struct MainTabView: View {
                     }
                     .onAppear { setTabs(3) }
                     .tag(3)
-                
+
                 CurrentUserProfileView(authService: authService, currentUser: currentUser)
                     .tabItem {
-                        VStack{
+                        VStack {
                             Image(systemName: "person")
                                 .environment(\.symbolVariants, selectedTab == 4 ? .fill : .none)
                             Text("Profile")
@@ -79,31 +78,28 @@ struct MainTabView: View {
             }
             .tint(.black)
         }
-        
     }
-    
-    private func setTabs(_ input: Int){
+
+    private func setTabs(_ input: Int) {
         prevSelectedTab = selectedTab
-        prevSelectedTab = input
+        selectedTab = input
     }
-    
+
     // Handle tab changes
     private func handleTabChange() {
-            if selectedTab == prevSelectedTab {
-                // User tapped the same tab again
-                if selectedTab == 0 {
-                    // Only refresh if the feed tab is tapped again
-                    print("DEBUG: Feed tab tapped again - refreshing FeedView")
-                    refreshViewTrigger = UUID() // Triggers a refresh by changing the ID
-                }
-            } else {
-                // User switched to a different tab
-                prevSelectedTab = selectedTab // Update the previous tab
+        if selectedTab == prevSelectedTab {
+            // User tapped the same tab again
+            if selectedTab == 0 {
+                // Only refresh if the feed tab is tapped again
+                print("DEBUG: Feed tab tapped again - refreshing FeedView")
+                refreshFeedView.toggle() // Toggle the refresh trigger
             }
+        } else {
+            // User switched to a different tab
+            prevSelectedTab = selectedTab // Update the previous tab
         }
-    
+    }
 }
-
 #Preview {
     MainTabView(authService: AuthService(), user: DeveloperPreview.user, currentUser: DeveloperPreview.currentUser)
 }

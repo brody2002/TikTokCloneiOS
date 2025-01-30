@@ -25,16 +25,8 @@ struct FeedCell: View {
             VStack{
                 Spacer()
                 HStack(alignment: .bottom){
-                    VStack(alignment: .leading){
-                        //User
-                        Text(post.username ?? "unknownUsername")
-                            .fontWeight(.semibold)
-                        
-                        //Caption
-                        Text(post.caption)
-                    }
-                    .foregroundStyle(.white)
-                    .font(.subheadline)
+                    FeedCellTitleCaption(post: post)
+                        .animation(.spring(response: 0.3), value: post.username)
                     Spacer()
                     VStack(spacing: 28){
                         
