@@ -27,6 +27,8 @@ struct Post: Identifiable, Codable {
     var savesAmount: Int
     /// Username of the uploader: Isn't set initally but set in the FeedViewModel of this app
     var username: String?
+    /// Placeholder Image for profiles
+    var imageUrl: String?
     
     enum CodingKeys: String, CodingKey {
         // Strings
@@ -41,6 +43,7 @@ struct Post: Identifiable, Codable {
         case commentsAmount
         case savesAmount
         case username
+        case imageUrl
     }
 }
 

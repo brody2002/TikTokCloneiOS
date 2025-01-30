@@ -37,9 +37,11 @@ struct FeedCell: View {
                             },
                             label:{
                                 ZStack{
+                                    //Image
                                     Circle()
                                         .frame(width: 48, height: 48)
                                         .foregroundStyle(.gray)
+                                    //OuterCricle
                                     Circle()
                                         .stroke(style: StrokeStyle(lineWidth: 1))
                                         .frame(width: 48, height: 48)

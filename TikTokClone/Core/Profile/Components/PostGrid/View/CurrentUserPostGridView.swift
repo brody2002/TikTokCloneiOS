@@ -38,8 +38,7 @@ struct CurrentUserPostGridView: View {
                             .navigationTransition(.zoom(sourceID: "\(post.id)", in: zoomNameSpace))
                             .ignoresSafeArea()
                     } label: {
-                        Rectangle()
-                            .frame(width: width, height: 160)
+                        GridImageView(width: width, postUrl: post.imageUrl)
                             .clipped()
                             .matchedTransitionSource(id: "\(post.id)", in: zoomNameSpace)
                     }

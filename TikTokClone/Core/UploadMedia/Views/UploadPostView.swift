@@ -14,7 +14,7 @@ struct UploadPostView: View {
     @State private var caption = ""
     @State private var imageID = UUID()
     @State private var selectedImage: UIImage?
-    @ObservedObject private var uploadManager = UploadPostService(videoUploader: VideoUploader())
+    @ObservedObject private var uploadManager = UploadPostService(videoUploader: VideoUploader(), imageUploader: ImageUploader())
     @ObservedObject var uploadVideoState: UploadVideoState
     @State var postURL: URL?
     @Environment(\.dismiss) var dismiss

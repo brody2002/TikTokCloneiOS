@@ -34,13 +34,14 @@ struct PostGridView: View {
         LazyVGrid(columns: items, spacing: spacing) {
             if let posts = fetchedPosts {
                 ForEach(posts) { post in
+                    
+                    // Individual posts in the grid
                     NavigationLink {
                         ProfileFeedView(sourcePost: post, posts: posts)
                             .navigationTransition(.zoom(sourceID: "\(post.id)", in: zoomNameSpace))
                             .ignoresSafeArea()
                     } label: {
-                        Rectangle()
-                            .frame(width: width, height: 160)
+                        GridImageView(width: width, postUrl: post.imageUrl)
                             .clipped()
                             .matchedTransitionSource(id: "\(post.id)", in: zoomNameSpace)
                     }
