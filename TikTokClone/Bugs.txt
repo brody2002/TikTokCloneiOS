@@ -9,3 +9,11 @@ Todo:
 3. Makes Likes, and Comments Count go up when pressing the button and updating to firebase
 4. Comments section
 
+
+Cocepts:
+
+Likes:
+- Stores the unique iDs in an array
+- The like count is stored separetly
+- 
+

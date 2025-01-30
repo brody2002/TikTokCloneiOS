@@ -18,6 +18,7 @@ struct FeedView: View {
     }
     
     var body: some View {
+        // pass refresh here instead of entire app
         ScrollView{
             LazyVStack(spacing: 0){
                 ForEach(viewModel.posts) { post in
@@ -30,7 +31,8 @@ struct FeedView: View {
             }
             .scrollTargetLayout()
         }
-        .onAppear{ player.play() }
+        .background(Color.black.ignoresSafeArea())
+        .onAppear{ player.play()}
         .onDisappear{ player.pause() }
         .scrollPosition(id: $scrollPosition)
         .scrollTargetBehavior(.paging)

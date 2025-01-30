@@ -26,7 +26,7 @@ protocol EditableUserType: UserType {
     var profileImageUrl: String? { get set }
 }
 
-// User (Struct) conforms to UserType (Immutable)
+/// User Object that's decoded from firebase
 struct User: Identifiable, Codable, Hashable, UserType {
     var id: String
     var username: String
@@ -36,7 +36,7 @@ struct User: Identifiable, Codable, Hashable, UserType {
     var profileImageUrl: String?
 }
 
-// CurrentUser (Class) conforms to EditableUserType (Mutable)
+/// User Object to be editted to for the editprofile UI
 class CurrentUser: ObservableObject, EditableUserType {
     @Published var id: String
     @Published var username: String

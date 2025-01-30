@@ -75,6 +75,7 @@ struct MediaSelectorView: View{
                 }
             }
             .onChange(of: showMediaPicker){ _, showMediaPickerBool in
+                print("DEBUG: selectorView SelectedTab: \(selectedTab) PrevTab: \(previousSelectedtab)")
                 if showMediaPickerBool == false && selectedItem == nil {
                     selectedTab = previousSelectedtab
                 }

@@ -22,19 +22,20 @@ class FeedViewModel: ObservableObject {
                 .order(by: "timestamp", descending: true)
                 .getDocuments { snapshot, error in
                     if let error = error {
-                        print("⚠️ Failed to fetch posts: \(error.localizedDescription)")
+                        print("DEBUG: ⚠️ Failed to fetch posts: \(error.localizedDescription)")
                         return
                     }
                     guard let documents = snapshot?.documents else {
-                        print("⚠️ No documents found.")
+                        print("DEBUG: ⚠️ No documents found.")
                         return
                     }
                     DispatchQueue.main.async {
                         self.posts = documents.compactMap { try? $0.data(as: Post.self) }
-                        print("📜 Decoded Posts:", self.posts)
+//                        print("DEBUG: 📜 Decoded Posts:", self.posts)
                         
                         // Username Fetch func
                         self.fetchPostsUsernames()
+                        
                     }
                 }
         }
@@ -53,7 +54,7 @@ class FeedViewModel: ObservableObject {
             group.notify(queue: .main) {
                 // Update state only once after all usernames are fetched
                 self.posts = updatedPosts
-                print("✅ Updated posts with usernames:", self.posts)
+//                print("DEBUG: ✅ Updated posts with usernames:", self.posts)
             }
         }
 
@@ -61,7 +62,7 @@ class FeedViewModel: ObservableObject {
             let unknownName = "unknownName"
             FirestoreConstants.UsersCollection.document(userId).getDocument { snapshot, error in
                 if let error = error {
-                    print("⚠️ Error fetching username: \(error.localizedDescription)")
+                    print("DEBUG: ⚠️ Error fetching username: \(error.localizedDescription)")
                     completion(unknownName)
                     return
                 }
