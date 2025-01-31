@@ -14,6 +14,7 @@ struct FeedCell: View {
     var player: AVPlayer
     let userService: UserService
     @State var user: User?
+    @State var showCommentSheet: Bool = false
     
     
     init(post: Post, player: AVPlayer) {
@@ -32,21 +33,19 @@ struct FeedCell: View {
                     FeedCellTitleCaption(post: post)
                         .animation(.spring(response: 0.3), value: post.username)
                     Spacer()
-                    VStack(spacing: 28){
-                        Button(
-                            action:{ print("DEBUG: go to Post's profile view") },
-                            label:{ FeedCellProfilePhotoView(user: user) }
-                        )
+                    VStack(spacing: 20){
+                        FeedCellProfilePhotoView(user: user)
+                            .padding(.bottom, 2)
                         Button(
                             action:{print("DEBUG: Add to like count")},
                             label: {  InterfaceItem(imageName: "heart.fill", inputData: post.likesAmount) })
                         Button(
-                            action:{print("DEBUG: Open Comment Sheet")},
+                            action:{ showCommentSheet.toggle() },
                             label: { InterfaceItem(imageName: "ellipsis.bubble.fill", inputData: post.commentsAmount) }
                         )
-                        Button(action:{
-                            print("DEBUG: Add to saved collection")},
-                               label: {  InterfaceItem(imageName: "bookmark.fill", inputData: post.savesAmount) }
+                        Button(
+                            action:{ print("DEBUG: Add to saved collection")},
+                            label: {  InterfaceItem(imageName: "bookmark.fill", inputData: post.savesAmount) }
                         )
                         
                         Button(
@@ -58,11 +57,18 @@ struct FeedCell: View {
                                     .foregroundStyle(.white)
                             }
                         )
+                        Spacer().frame(height: 2)
                     }
                 }
                 .padding(.bottom, 80)
             }
-            .padding()
+            .padding(.leading)
+            .padding(.top)
+            .padding(.bottom)
+            .sheet(isPresented: $showCommentSheet) {
+                CommentSectionView()
+                    .presentationDetents([.fraction(0.70)])
+            }
         }
         .task {
             do {
@@ -111,15 +117,18 @@ extension FeedCell {
         }
         
         var body: some View {
-            Image(systemName: imageName)
-                .resizable()
-                .frame(width: width, height: height)
-                .foregroundStyle(.white)
-            
-            PostNumericsHandler(inputData: inputData)
-                .font(.caption)
-                .foregroundStyle(.white)
-                .bold()
+            VStack{
+                Image(systemName: imageName)
+                    .resizable()
+                    .frame(width: width, height: height)
+                    .foregroundStyle(.white)
+                
+                PostNumericsHandler(inputData: inputData)
+                    .font(.caption)
+                    .foregroundStyle(.white)
+                    .bold()
+            }
+           
         }
     }
 }

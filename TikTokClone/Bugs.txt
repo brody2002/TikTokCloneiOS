@@ -6,7 +6,6 @@ Bugs:
 Todo:
 3. Makes Likes, and Comments Count go up when pressing the button and updating to firebase
 4. Comments section
-5. Nav Bar + Profile Images
 6. Delete Posts
 
 
@@ -16,4 +15,7 @@ Likes:
 - Stores the unique iDs in an array
 - The like count is stored separetly
 - 
+
+
+
 

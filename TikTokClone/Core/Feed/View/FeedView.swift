@@ -20,40 +20,42 @@ struct FeedView: View {
     }
 
     var body: some View {
-        ScrollView {
-            LazyVStack(spacing: 0) {
-                ForEach(viewModel.posts) { post in
-                    FeedCell(post: post, player: player)
-                        .id(post.id)
-                        .onAppear {
-                            playInitialVideoIfNecessary()
-                        }
+        NavigationStack{
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(viewModel.posts) { post in
+                        FeedCell(post: post, player: player)
+                            .id(post.id)
+                            .onAppear {
+                                playInitialVideoIfNecessary()
+                            }
+                    }
                 }
+                .scrollTargetLayout()
             }
-            .scrollTargetLayout()
-        }
-        .onAppear { player.play() }
-        .onDisappear { player.pause() }
-        .scrollPosition(id: $scrollPosition)
-        .scrollTargetBehavior(.paging)
-        .ignoresSafeArea()
-        .onChange(of: scrollPosition) { oldPostId, newPostId in
-            playVideoOnChangeOfScrollPosition(postId: newPostId)
-        }
-        .onChange(of: refreshFeedView) { _, _ in
-            // Trigger refresh logic when refreshFeedView changes
-            
-            refreshView()
-        }
-        .overlay(
-            VStack{
-                FeedViewNavBar()
-                    .padding(.top, 10)
-                    .padding(.horizontal)
-                Spacer()
+            .onAppear { player.play() }
+            .onDisappear { player.pause() }
+            .scrollPosition(id: $scrollPosition)
+            .scrollTargetBehavior(.paging)
+            .ignoresSafeArea()
+            .onChange(of: scrollPosition) { oldPostId, newPostId in
+                playVideoOnChangeOfScrollPosition(postId: newPostId)
             }
-        )
-        .background(Color.black.ignoresSafeArea())
+            .onChange(of: refreshFeedView) { _, _ in
+                // Trigger refresh logic when refreshFeedView changes
+                
+                refreshView()
+            }
+            .overlay(
+                VStack{
+                    FeedViewNavBar()
+                        .padding(.top, 10)
+                        .padding(.horizontal)
+                    Spacer()
+                }
+            )
+            .background(Color.black.ignoresSafeArea())
+        }
     }
 
     func playInitialVideoIfNecessary() {

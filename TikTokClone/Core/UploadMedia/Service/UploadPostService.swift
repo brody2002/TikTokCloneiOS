@@ -52,7 +52,12 @@ class UploadPostService: ObservableObject {
             "caption": caption,
             "likesAmount": 0,
             "commentsAmount": 0,
-            "savesAmount": 0
+            "savesAmount": 0,
+            "commentSection": CommentSection(
+                id: NSUUID().uuidString,
+                commentAmount: 0,
+                commentList: [Comment]()
+            )
         ]
         
         // Uploads postData to firebase under postId
