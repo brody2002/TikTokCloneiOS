@@ -7,15 +7,18 @@
 
 import SwiftUI
 import AVKit
+import Kingfisher
 
 struct FeedCell: View {
     let post: Post
     var player: AVPlayer
+    let userService: UserService
 
     
     init(post: Post, player: AVPlayer) {
         self.post = post
         self.player = player
+        self.userService = UserService()
     }
     
     var body: some View {
@@ -38,6 +41,7 @@ struct FeedCell: View {
                             label:{
                                 ZStack{
                                     //Image
+                                    
                                     Circle()
                                         .frame(width: 48, height: 48)
                                         .foregroundStyle(.gray)

@@ -32,7 +32,6 @@ struct FeedView: View {
             }
             .scrollTargetLayout()
         }
-        .background(Color.black.ignoresSafeArea())
         .onAppear { player.play() }
         .onDisappear { player.pause() }
         .scrollPosition(id: $scrollPosition)
@@ -46,6 +45,15 @@ struct FeedView: View {
             
             refreshView()
         }
+        .overlay(
+            VStack{
+                FeedViewNavBar()
+                    .padding(.top, 10)
+                    .padding(.horizontal)
+                Spacer()
+            }
+        )
+        .background(Color.black.ignoresSafeArea())
     }
 
     func playInitialVideoIfNecessary() {

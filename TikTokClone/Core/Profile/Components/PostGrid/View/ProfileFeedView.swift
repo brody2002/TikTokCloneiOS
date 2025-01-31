@@ -42,6 +42,15 @@ struct ProfileFeedView: View {
             playVideoOnChangeOfScrollPosition(postId: newPostId)
         }
         .navigationBarBackButtonHidden()
+        // NavBar
+        .overlay(
+            VStack{
+                ProfilePostNavBar()
+                    .padding(.top, 54)
+                    .padding(.horizontal)
+                Spacer()
+            }
+        )
     }
     
     func playInitialViideoIfNecessary(){

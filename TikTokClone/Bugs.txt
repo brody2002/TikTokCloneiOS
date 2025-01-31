@@ -4,10 +4,10 @@ Bugs:
 
 
 Todo:
-1. Be able to refresh the feed
-2. Cure the black boxes that plauge the profiles and create image functions that take a placeholder image of the video
 3. Makes Likes, and Comments Count go up when pressing the button and updating to firebase
 4. Comments section
+5. Nav Bar + Profile Images
+6. Delete Posts
 
 
 Cocepts:
