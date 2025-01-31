@@ -40,7 +40,7 @@ class UploadPostService: ObservableObject {
         guard let imageUrl else { return }
         guard let currentUid = Auth.auth().currentUser?.uid else { return }
         
-        let timeStamp = formatDate()
+        let timeStamp = Timestamp.formatDate()
         
         let postId = NSUUID().uuidString
         let postData: [String: Any] = [
@@ -54,7 +54,7 @@ class UploadPostService: ObservableObject {
             "commentsAmount": 0,
             "savesAmount": 0,
             "commentSection": CommentSection(
-                id: NSUUID().uuidString,
+                id: postId,
                 commentAmount: 0,
                 commentList: [Comment]()
             )
@@ -67,13 +67,6 @@ class UploadPostService: ObservableObject {
         try await FirestoreConstants.UsersCollection.document(currentUid).updateData([
             "postIds": FieldValue.arrayUnion([postId])
         ])
-    }
-
-    private func formatDate() -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let dateString = formatter.string(from: Date())
-        return dateString
     }
 
     private func generateThumbnail(for videoUrl: URL?) async -> UIImage? {

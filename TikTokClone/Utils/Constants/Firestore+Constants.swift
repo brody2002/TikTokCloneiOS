@@ -12,4 +12,6 @@ struct FirestoreConstants{
     static let Root = Firestore.firestore()
     static let UsersCollection = Root.collection("users")
     static let PostCollection = Root.collection("posts")
+    static let CommentSectionCollections = Root.collection("commentSelections")
+    static let CommentsCollection = Root.collection("comments")
 }

@@ -15,6 +15,7 @@ struct MainTabView: View {
     @StateObject var uploadVideoState = UploadVideoState(isVideoPosted: false)
     @ObservedObject var currentUser: CurrentUser
     @State var refreshFeedView: Bool = false // Trigger to refresh FeedView content
+    @State var moveTabViewDown: Bool = false
 
     var body: some View {
         ZStack {
@@ -75,8 +76,14 @@ struct MainTabView: View {
                     }
                     .onAppear { setTabs(4) }
                     .tag(4)
-            }
-            .tint(.black)
+            }.tint(.black)
+            .offset(y: moveTabViewDown ? 200 : 0)
+            
+//            Button("TEST"){
+//                withAnimation { moveTabViewDown.toggle()}
+//            }
+//            .foregroundStyle(.blue)
+            
         }
     }
 

@@ -66,7 +66,8 @@ struct FeedCell: View {
             .padding(.top)
             .padding(.bottom)
             .sheet(isPresented: $showCommentSheet) {
-                CommentSectionView()
+                // Pass in CommentSection from post
+                CommentSectionView(post: post)
                     .presentationDetents([.fraction(0.70)])
             }
         }

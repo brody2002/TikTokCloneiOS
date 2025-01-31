@@ -19,4 +19,10 @@ struct Comment: Identifiable, Codable {
     var usernameId: String
     var message: String
     var timestamp: String
+    var likes: Int
+    var thumbsDown: Int
+    var replyList: [Comment]
+    var replyAmount: Int
 }
+
+

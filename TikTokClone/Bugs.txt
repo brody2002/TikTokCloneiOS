@@ -1,12 +1,15 @@
 
 Bugs:
 1. Date in the post data in firebase can't be sorted. Find a better way to store the data
-
+2. The tiktoks from profiles and search dont take over the task bar like it does in the main apps. 
 
 Todo:
 3. Makes Likes, and Comments Count go up when pressing the button and updating to firebase
 4. Comments section
 6. Delete Posts
+7. Comment Section ViewModel
+    - on the comment TextField view catch the submission notifcation
+     
 
 
 Cocepts:
