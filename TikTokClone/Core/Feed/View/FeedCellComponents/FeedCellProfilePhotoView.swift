@@ -25,6 +25,20 @@ struct FeedCellProfilePhotoView: View {
                     .foregroundColor(.gray)
                     .onAppear{print("DEBUG: CIRCLE profilePhotoUrl -> \(user?.profileImageUrl ?? "no url provided")")}
             }
+            Circle()
+                .stroke(style: StrokeStyle(lineWidth: 1))
+                .frame(width: 48, height: 48)
+                .foregroundStyle(.white)
+            ZStack{
+                Circle()
+                    .frame(width: 20, height: 20)
+                    .foregroundStyle(.pink)
+                Image(systemName: "plus")
+                    .resizable()
+                    .frame(width: 12, height: 12)
+                    .shadow(radius: 3)
+            }
+            .offset(y: 30)
         }
         
             

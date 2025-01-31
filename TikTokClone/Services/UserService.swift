@@ -44,16 +44,15 @@ struct UserService: UserServiceProtocol {
         let snapshot = try await FirestoreConstants.UsersCollection.getDocuments()
         return snapshot.documents.compactMap({ try? $0.data(as: User.self)})
     }
+    
     /// Fetching posts from a User's profile
     func fetchPosts(user: User) async throws -> [Post] {
         var posts = [Post]()
         let userSnapshot = try await FirestoreConstants.UsersCollection.document(user.id).getDocument()
         
         guard let userData = userSnapshot.data(),
-              let postIds = userData["postIds"] as? [String], !postIds.isEmpty else {
-            print("No posts found for user.")
-            return []
-        }
+              let postIds = userData["postIds"] as? [String], !postIds.isEmpty else { return [] }
+        
         // Fetch posts where postId is in the retrieved post IDs
         let snapshot = try await FirestoreConstants.PostCollection
             .whereField("postId", in: postIds)
@@ -88,15 +87,12 @@ struct UserService: UserServiceProtocol {
         let unknownName = "unknownName"
         FirestoreConstants.UsersCollection.document(userId).getDocument { snapshot, error in
             if let error = error {
-                print("⚠️ Error fetching username: \(error.localizedDescription)")
+                print("DEBUG: Error fetching username: \(error.localizedDescription)")
                 completion(unknownName)
                 return
             }
-            if let data = snapshot?.data(), let username = data["username"] as? String {
-                completion(username)
-            } else {
-                completion(unknownName)
-            }
+            if let data = snapshot?.data(), let username = data["username"] as? String { completion(username) }
+            else { completion(unknownName) }
         }
     }
     

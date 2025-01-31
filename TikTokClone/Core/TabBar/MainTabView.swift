@@ -85,15 +85,9 @@ struct MainTabView: View {
         selectedTab = input
     }
 
-    // Handle tab changes
     private func handleTabChange() {
         if selectedTab == prevSelectedTab {
-            // User tapped the same tab again
-            if selectedTab == 0 {
-                // Only refresh if the feed tab is tapped again
-                print("DEBUG: Feed tab tapped again - refreshing FeedView")
-                refreshFeedView.toggle() // Toggle the refresh trigger
-            }
+            if selectedTab == 0 { refreshFeedView.toggle() }
         } else {
             // User switched to a different tab
             if selectedTab != 2 { prevSelectedTab = selectedTab } // Update the previous tab

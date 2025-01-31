@@ -14,7 +14,7 @@ struct FeedCell: View {
     var player: AVPlayer
     let userService: UserService
     @State var user: User?
-
+    
     
     init(post: Post, player: AVPlayer) {
         self.post = post
@@ -33,84 +33,31 @@ struct FeedCell: View {
                         .animation(.spring(response: 0.3), value: post.username)
                     Spacer()
                     VStack(spacing: 28){
-                        
                         Button(
-                            action:{
-                                // Go to Post's Porfile View
-                                print("DEBUG: go to Post's profile view")
-                            },
-                            label:{
-                                ZStack{
-                                    //Image
-                                    FeedCellProfilePhotoView(user: user)
-                                    //OuterCricle
-                                    Circle()
-                                        .stroke(style: StrokeStyle(lineWidth: 1))
-                                        .frame(width: 48, height: 48)
-                                        .foregroundStyle(.white)
-                                    ZStack{
-                                        Circle()
-                                            .frame(width: 20, height: 20)
-                                            .foregroundStyle(.pink)
-                                        Image(systemName: "plus")
-                                            .resizable()
-                                            .frame(width: 12, height: 12)
-                                    }
-                                    .offset(y: 20)
-                                }
-                            }
+                            action:{ print("DEBUG: go to Post's profile view") },
+                            label:{ FeedCellProfilePhotoView(user: user) }
+                        )
+                        Button(
+                            action:{print("DEBUG: Add to like count")},
+                            label: {  InterfaceItem(imageName: "heart.fill", inputData: post.likesAmount) })
+                        Button(
+                            action:{print("DEBUG: Open Comment Sheet")},
+                            label: { InterfaceItem(imageName: "ellipsis.bubble.fill", inputData: post.commentsAmount) }
+                        )
+                        Button(action:{
+                            print("DEBUG: Add to saved collection")},
+                               label: {  InterfaceItem(imageName: "bookmark.fill", inputData: post.savesAmount) }
                         )
                         
-                        
-                        Button(action:{
-                            
-                        }, label: {
-                            VStack{
-                                Image(systemName: "heart.fill")
+                        Button(
+                            action:{ print("DEBUG: Share feature") },
+                            label: {
+                                Image(systemName: "arrowshape.turn.up.right.fill")
                                     .resizable()
                                     .frame(width: 28, height: 28)
                                     .foregroundStyle(.white)
-                                
-                                PostNumericsHandler(inputData: post.likesAmount)
-                                    .font(.caption)
-                                    .foregroundStyle(.white)
-                                    .bold()
                             }
-                            
-                        })
-                        Button(action:{
-                            
-                        }, label: {
-                            VStack{
-                                Image(systemName: "ellipsis.bubble.fill")
-                                    .resizable()
-                                    .frame(width: 28, height: 28)
-                                    .foregroundStyle(.white)
-                                
-                                PostNumericsHandler(inputData: post.commentsAmount)
-                                    .font(.caption)
-                                    .foregroundStyle(.white)
-                                    .bold()
-                            }
-                        })
-                        
-                        Button(action:{
-                            
-                        }, label: {
-                            Image(systemName: "bookmark.fill")
-                                .resizable()
-                                .frame(width: 22, height: 28)
-                                .foregroundStyle(.white)
-                        })
-                        
-                        Button(action:{
-                            
-                        }, label: {
-                            Image(systemName: "arrowshape.turn.up.right.fill")
-                                .resizable()
-                                .frame(width: 28, height: 28)
-                                .foregroundStyle(.white)
-                        })
+                        )
                     }
                 }
                 .padding(.bottom, 80)
@@ -119,11 +66,11 @@ struct FeedCell: View {
         }
         .task {
             do {
-                    self.user = try await userService.fetchSpecificUser(userId: post.userId)
-                    print("DEBUG: Fetched user profileImageUrl -> \(self.user?.profileImageUrl ?? "no url")")
-                } catch {
-                    print("DEBUG: unable to fetch the posted User")
-                }
+                self.user = try await userService.fetchSpecificUser(userId: post.userId)
+                print("DEBUG: Fetched user profileImageUrl -> \(self.user?.profileImageUrl ?? "no url")")
+            } catch {
+                print("DEBUG: unable to fetch the posted User")
+            }
         }
         .onTapGesture {
             switch player.timeControlStatus {
@@ -137,7 +84,6 @@ struct FeedCell: View {
                 break
             }
         }
-        
     }
 }
 
@@ -145,12 +91,37 @@ extension FeedCell {
     
     struct PostNumericsHandler: View {
         var inputData: Int
-            var body: some View {
-                if inputData > 0{
-                    Text("\(inputData)")
-                } else { Text("") }
-            }
+        var body: some View {
+            if inputData > 0{
+                Text("\(inputData)")
+            } else { Text("") }
         }
+    }
+    
+    struct InterfaceItem: View {
+        let imageName: String
+        let width: CGFloat
+        let height: CGFloat
+        let inputData: Int
+        init(imageName: String, width: CGFloat = 28, height: CGFloat = 28, inputData: Int) {
+            self.imageName = imageName
+            self.width = width
+            self.height = height
+            self.inputData = inputData
+        }
+        
+        var body: some View {
+            Image(systemName: imageName)
+                .resizable()
+                .frame(width: width, height: height)
+                .foregroundStyle(.white)
+            
+            PostNumericsHandler(inputData: inputData)
+                .font(.caption)
+                .foregroundStyle(.white)
+                .bold()
+        }
+    }
 }
 
 #Preview {

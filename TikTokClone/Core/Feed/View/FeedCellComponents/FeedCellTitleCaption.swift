@@ -12,12 +12,9 @@ struct FeedCellTitleCaption: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            // User
             if let username = post.username {
                 Text(username)
                     .fontWeight(.semibold)
-                
-                // Caption
                 Text(post.caption)
             } else {
                 Text("")
