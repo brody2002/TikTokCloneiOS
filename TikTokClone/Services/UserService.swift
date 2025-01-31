@@ -16,6 +16,14 @@ protocol UserServiceProtocol{
 
 struct UserService: UserServiceProtocol {
     
+    func fetchSpecificUser(userId: String?) async throws -> User? {
+        // Obtain user object
+        guard let id = userId else { return nil }
+        let fetchedUser = try? await FirestoreConstants.UsersCollection.document(id).getDocument(as: User.self)
+        guard let fetchedUser  = fetchedUser else { return nil }
+        return fetchedUser
+    }
+    
     func fetchCurrentUser() async throws -> User? {
         guard let currentUid = Auth.auth().currentUser?.uid else { return nil }
         let currentUser = try await FirestoreConstants.UsersCollection.document(currentUid).getDocument(as: User.self)
@@ -91,6 +99,8 @@ struct UserService: UserServiceProtocol {
             }
         }
     }
+    
+    
 }
 
 struct MockUserService: UserServiceProtocol {

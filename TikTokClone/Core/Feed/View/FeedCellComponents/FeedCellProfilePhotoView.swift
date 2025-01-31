@@ -9,24 +9,30 @@ import SwiftUI
 import Kingfisher
 
 struct FeedCellProfilePhotoView: View {
-    let profilePhotoUrl: String?
+    var user: User?
     var body: some View {
-        if let photoUrl = profilePhotoUrl {
-            KFImage(URL(string: photoUrl))
-                .clipShape(Circle())
-                .frame(width: 48, height: 48)
-                .foregroundStyle(.gray)
-        } else {
-            Circle()
-                .frame(width: 48, height: 48)
-                .foregroundStyle(.gray)
+        ZStack{
+            if let profilePhotoUrl = user?.profileImageUrl{
+                KFImage(URL(string: profilePhotoUrl))
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 48, height: 48)
+                    .clipShape(Circle())
+                    .onAppear{print("DEBUG: FEED PROFILE profilePhotoUrl -> \(profilePhotoUrl)")}
+            } else {
+                Circle()
+                    .frame(width: 48, height: 48)
+                    .foregroundColor(.gray)
+                    .onAppear{print("DEBUG: CIRCLE profilePhotoUrl -> \(user?.profileImageUrl ?? "no url provided")")}
+            }
         }
-        
         
             
     }
+    
 }
 
+
 #Preview {
-    FeedCellProfilePhotoView(profilePhotoUrl: "")
+    FeedCellProfilePhotoView(user: DeveloperPreview.user )
 }

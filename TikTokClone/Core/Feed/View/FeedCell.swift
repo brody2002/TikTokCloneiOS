@@ -13,6 +13,7 @@ struct FeedCell: View {
     let post: Post
     var player: AVPlayer
     let userService: UserService
+    @State var user: User?
 
     
     init(post: Post, player: AVPlayer) {
@@ -41,10 +42,7 @@ struct FeedCell: View {
                             label:{
                                 ZStack{
                                     //Image
-                                    
-                                    Circle()
-                                        .frame(width: 48, height: 48)
-                                        .foregroundStyle(.gray)
+                                    FeedCellProfilePhotoView(user: user)
                                     //OuterCricle
                                     Circle()
                                         .stroke(style: StrokeStyle(lineWidth: 1))
@@ -118,6 +116,14 @@ struct FeedCell: View {
                 .padding(.bottom, 80)
             }
             .padding()
+        }
+        .task {
+            do {
+                    self.user = try await userService.fetchSpecificUser(userId: post.userId)
+                    print("DEBUG: Fetched user profileImageUrl -> \(self.user?.profileImageUrl ?? "no url")")
+                } catch {
+                    print("DEBUG: unable to fetch the posted User")
+                }
         }
         .onTapGesture {
             switch player.timeControlStatus {

@@ -15,7 +15,8 @@ struct DeveloperPreview {
         username: "lebron_james",
         email: "lebron@gmail.com",
         fullName: "Lebron James",
-        bio: "Hello guys... It's me Lebron James"
+        bio: "Hello guys... It's me Lebron James",
+        profileImageUrl: "https://firebasestorage.googleapis.com:443/v0/b/tiktokclone-5ce67.firebasestorage.app/o/profile_images%2FB08BDBD9-0495-433A-A969-30166333B97C?alt=media&token=08ec3334-719d-4c5a-80f5-8ea0f28ff92f"
     )
     
     static var currentUser = CurrentUser(
