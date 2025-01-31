@@ -82,14 +82,12 @@ struct UploadPostView: View {
 extension UploadPostView {
     
     private func loadImage() async {
-        print("DEBUG: Running loadImage() function")
         do {
             // Load the video URL
             guard let videoData = try await selectedItem.loadTransferable(type: Data.self) else { return }
             
             // Save the video to a temporary file
             postURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString).appendingPathExtension("mp4")
-            print("DEBUG: from loadImage() postURL: \(postURL!)")
             try videoData.write(to: postURL!)
             
             // Generate a thumbnail from the video

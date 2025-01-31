@@ -96,7 +96,8 @@ struct MainTabView: View {
             }
         } else {
             // User switched to a different tab
-            prevSelectedTab = selectedTab // Update the previous tab
+            if selectedTab != 2 { prevSelectedTab = selectedTab } // Update the previous tab
+            
         }
     }
 }
