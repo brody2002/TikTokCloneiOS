@@ -61,18 +61,18 @@ class CommentSectionViewModel: ObservableObject {
     
     //HAS ISSUES somewhere
     func fetchCommentsOnPost(postId: String) async throws -> [Comment] {
-        /// returns Array of Comment Objects
+        // Step 1: Fetch the document from Firestore
         let commentSectionDocument = FirestoreConstants.CommentSectionCollections.document(postId)
-        let commentIds = try await commentSectionDocument.getDocument(as: [String].self)
+        let snapshot = try await commentSectionDocument.getDocument()
+        
+        let commentSection = try snapshot.data(as: CommentSection.self)
+        let commentIds = commentSection.commentIds
+        
         var comments: [Comment] = []
         for commentId in commentIds {
             let commentDocument = FirestoreConstants.CommentsCollection.document(commentId)
-            do {
-                let comment = try await commentDocument.getDocument(as: Comment.self)
-                comments.append(comment)
-            }
-            catch {print("\nDEBUG: couldnt convert document -> Comment.self\n")}
-            
+            let comment = try await commentDocument.getDocument(as: Comment.self)
+            comments.append(comment)
         }
         return comments
     }

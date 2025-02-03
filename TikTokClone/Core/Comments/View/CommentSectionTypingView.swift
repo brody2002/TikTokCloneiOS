@@ -18,10 +18,14 @@ struct CommentSectionTypingView: View {
     @State private var text: String = ""
     @FocusState private var focusField: FocusField?
     let viewModel: CommentSectionViewModel
+    let user: User
+    @Binding var refreshId: UUID
     
-    init(post: Post) {
+    init(post: Post, user: User, refreshId: Binding<UUID>) {
         self.post = post
         self.viewModel = CommentSectionViewModel(post: post)
+        self.user = user
+        self._refreshId = refreshId
         self.focusField = nil
     }
     
@@ -45,7 +49,7 @@ struct CommentSectionTypingView: View {
             .focused($focusField, equals: .emoji)
             .font(.system(size: 24))
             HStack(spacing: 20){
-                AvatarView(user: DeveloperPreview.user, size: .xSmall)
+                AvatarView(user: user, size: .xSmall)
                 TextField("Add comment...", text: $text)
                     .foregroundStyle(.black)
                     .font(.callout)
@@ -70,7 +74,9 @@ struct CommentSectionTypingView: View {
                     )
                     .submitLabel(.send)
                     .onSubmit {
-                        Task { await submitComment(comment: text) }
+                        Task {
+                            await submitComment(comment: text)
+                        }
                     }
                 
                 	
@@ -109,9 +115,10 @@ extension CommentSectionTypingView {
         catch { print("DEBUG: Couldn't Upload comment") }
         self.text = ""
         self.focusField = nil
+        refreshId = UUID()
     }
 }
 
 #Preview {
-    CommentSectionTypingView(post: DeveloperPreview.post)
+    CommentSectionTypingView(post: DeveloperPreview.post, user: DeveloperPreview.user, refreshId: .constant(UUID()))
 }

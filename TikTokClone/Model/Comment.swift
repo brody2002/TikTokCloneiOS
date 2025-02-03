@@ -8,8 +8,8 @@
 import Foundation
 
 struct CommentSection: Identifiable, Codable{
-    var id: String
-    var commentAmount: Int
+    var id: String?
+    var commentAmount: Int?
     var commentIds: [String]
 }
 

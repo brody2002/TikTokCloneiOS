@@ -12,6 +12,9 @@ struct CommentSectionView: View {
     let commentSectionViewModel: CommentSectionViewModel
     @State var commentSection: CommentSection?
     @State var commentsArray: [Comment]?
+    let userService = UserService()
+    @State var user: User?
+    @State var refreshCommentSectionId = UUID()
     
     init(post: Post) {
         self.post = post
@@ -21,14 +24,14 @@ struct CommentSectionView: View {
     }
     var body: some View {
         VStack{
-            Text("\(commentSection?.commentAmount ?? 0)")
+            Text("Comments: \(commentSection?.commentAmount ?? 0)")
                 .foregroundStyle(.black)
                 .font(.footnote)
                 .padding(.top, 32)
             ScrollView{
                 LazyVStack(spacing: 15){
                     if let commentsArray = commentsArray {
-                        ForEach(commentsArray, id: \.id) { comment in
+                        ForEach(commentsArray.sorted(by: { $0.timestamp > $1.timestamp })) { comment in
                             CommentSectionRowView(comment: comment)
                         }
                     }
@@ -36,8 +39,12 @@ struct CommentSectionView: View {
             }
             .padding(.horizontal)
             // Typing View
-            CommentSectionTypingView(post: post)
-                .offset(y: -30)
+            if let user = user {
+                CommentSectionTypingView(post: post, user: user, refreshId: $refreshCommentSectionId)
+                    .offset(y: -30)
+                    
+            }
+            
             
         }
         .onTapGesture {
@@ -45,9 +52,16 @@ struct CommentSectionView: View {
         }
         .task{
             self.commentSection = try? await commentSectionViewModel.fetchCommentSection(postId: post.id)
-            print("\nDEBUG: found CommentsSection \(self.commentSection)\n")
             self.commentsArray = try? await commentSectionViewModel.fetchCommentsOnPost(postId: post.id)
-            print("\nDEBUG: found CommentsArary \(self.commentsArray)\n")
+            self.user = try? await userService.fetchCurrentUser()
+            
+        }
+        .onChange(of: self.refreshCommentSectionId) { _, _ in
+            Task{
+                print("DEBUG: Update to the comments section")
+                self.commentsArray = try? await commentSectionViewModel.fetchCommentsOnPost(postId: post.id)
+            }
+            
         }
         
     }

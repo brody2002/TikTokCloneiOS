@@ -69,7 +69,8 @@ struct CommentSectionRowView: View {
             }
             Spacer()
         }.task {
-            user = try? await userService.fetchCurrentUser()
+            user = try? await userService.fetchSpecificUser(userId: comment.userId)
+
         }
     }
 }
