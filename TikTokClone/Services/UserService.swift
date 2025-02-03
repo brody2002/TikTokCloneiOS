@@ -27,7 +27,6 @@ struct UserService: UserServiceProtocol {
     func fetchCurrentUser() async throws -> User? {
         guard let currentUid = Auth.auth().currentUser?.uid else { return nil }
         let currentUser = try await FirestoreConstants.UsersCollection.document(currentUid).getDocument(as: User.self)
-        print("DEBUG: Current user is \(currentUser)")
         return currentUser
     }
     
@@ -70,7 +69,6 @@ struct UserService: UserServiceProtocol {
     private func fetchPostsUsernames(posts: [Post], completion: @escaping ([Post]) -> Void) {
         var updatedPosts = posts
         let group = DispatchGroup() // Used to track all async requests
-        
         for (index, post) in posts.enumerated() {
             group.enter() // Track async task
             fetchUsername(for: post.userId) { username in
@@ -91,7 +89,8 @@ struct UserService: UserServiceProtocol {
                 completion(unknownName)
                 return
             }
-            if let data = snapshot?.data(), let username = data["username"] as? String { completion(username) }
+            if let data = snapshot?.data(), let username = data["username"] as? String {
+                completion(username) }
             else { completion(unknownName) }
         }
     }

@@ -74,7 +74,6 @@ struct FeedCell: View {
         .task {
             do {
                 self.user = try await userService.fetchSpecificUser(userId: post.userId)
-                print("DEBUG: Fetched user profileImageUrl -> \(self.user?.profileImageUrl ?? "no url")")
             } catch {
                 print("DEBUG: unable to fetch the posted User")
             }

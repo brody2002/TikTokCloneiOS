@@ -32,13 +32,13 @@ struct FeedCellProfilePhotoView: View {
                             .foregroundStyle(.pink)
                         Image(systemName: "plus")
                             .resizable()
-                            .frame(width: 12, height: 12)
-                            .foregroundStyle(.black)
+                            .frame(width: 14, height: 14)
+                            .foregroundStyle(.white)
                             .shadow(radius: 3)
                     }
                 }
             )
-            .offset(y: 30)
+            .offset(y: 20)
         }
         
         

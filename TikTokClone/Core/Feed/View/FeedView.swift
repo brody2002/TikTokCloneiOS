@@ -80,7 +80,6 @@ struct FeedView: View {
 
     func refreshView() {
         // Refresh the video content
-        print("DEBUG: Refreshing FeedView content")
         viewModel.fetchPosts() // Example: Reload posts from the ViewModel
         player.replaceCurrentItem(with: nil) // Reset the player
         if let firstPost = viewModel.posts.first {

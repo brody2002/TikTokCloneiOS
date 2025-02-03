@@ -8,21 +8,29 @@
 import SwiftUI
 
 struct CommentSectionRowView: View {
-    let user: User?
+    let userService: UserService
+    let comment: Comment
+    @State var user: User?
+    
+    init(comment: Comment) {
+        self.userService = UserService()
+        self.comment = comment
+        self.user = nil
+    }
     var body: some View {
         HStack(alignment: .top, spacing: 10){
             AvatarView(user: user, size: .xSmall)
             VStack(alignment: .leading, spacing: 5){
-                Text("username")
+                Text(comment.username)
                     .font(.caption2)
                     .foregroundStyle(Color(.systemGray))
                     .fontWeight(.semibold)
-                Text("Hello! this is a comment being left in the comment section 🦦")
+                Text(comment.message)
                     .font(.footnote)
                     .foregroundStyle(.black)
                     .fontWeight(.semibold)
                 HStack(spacing: 10){
-                    Text("2025-1-31")
+                    Text(comment.timestamp)
                         .font(.caption)
                         .foregroundStyle(Color(.systemGray4))
                     Button(
@@ -41,7 +49,7 @@ struct CommentSectionRowView: View {
                                 .foregroundStyle(Color(.systemGray))
                                 .frame(width: 18, height: 18)
                             VStack(alignment: .center){
-                                Text("333k")
+                                Text("\(comment.likes)")
                                     .foregroundStyle(Color(.systemGray))
                                     .font(.caption2)
                                     .frame(width: 40, alignment: .leading)
@@ -60,10 +68,12 @@ struct CommentSectionRowView: View {
                     
             }
             Spacer()
+        }.task {
+            user = try? await userService.fetchCurrentUser()
         }
     }
 }
 
 #Preview {
-    CommentSectionRowView(user: DeveloperPreview.user)
+    CommentSectionRowView(comment: DeveloperPreview.comment)
 }

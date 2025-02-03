@@ -43,6 +43,20 @@ class UploadPostService: ObservableObject {
         let timeStamp = Timestamp.formatDate()
         
         let postId = NSUUID().uuidString
+        
+        
+        let commentSection = CommentSection(
+                id: postId,
+                commentAmount: 0,
+                commentIds: []
+            )
+        
+        let commentSectionDict: [String: Any] = [
+                "id": postId,
+                "commentAmount": commentSection.commentAmount,
+                "commentIds": []
+            ]
+        
         let postData: [String: Any] = [
             "postId": postId,
             "id": currentUid, // userId
@@ -53,20 +67,19 @@ class UploadPostService: ObservableObject {
             "likesAmount": 0,
             "commentsAmount": 0,
             "savesAmount": 0,
-            "commentSection": CommentSection(
-                id: postId,
-                commentAmount: 0,
-                commentList: [Comment]()
-            )
+            "commentSectionId": postId
         ]
         
         // Uploads postData to firebase under postId
         try await FirestoreConstants.PostCollection.document(postId).setData(postData)
         
-        // Uploads new post to userDatabase
+        // Uploads new post to the "users" Database
         try await FirestoreConstants.UsersCollection.document(currentUid).updateData([
             "postIds": FieldValue.arrayUnion([postId])
         ])
+        
+        // Uploads CommentSection to "commentSection" Database
+        try await FirestoreConstants.CommentSectionCollections.document(postId).setData(commentSectionDict)
     }
 
     private func generateThumbnail(for videoUrl: URL?) async -> UIImage? {

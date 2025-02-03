@@ -6,15 +6,29 @@
 //
 
 import SwiftUI
+import UIKit
+
+enum FocusField: Hashable {
+    case comment
+    case emoji
+}
 
 struct CommentSectionTypingView: View {
     let post: Post
-    @Binding var isTextFieldFocused: Bool // Binding to control focus
     @State private var text: String = ""
-    @FocusState private var focusState: Bool
+    @FocusState private var focusField: FocusField?
+    let viewModel: CommentSectionViewModel
     
-    private var showSubmitButton: Bool { return !text.isEmpty && !focusState }
+    init(post: Post) {
+        self.post = post
+        self.viewModel = CommentSectionViewModel(post: post)
+        self.focusField = nil
+    }
     
+    
+    private var showSubmitButton: Bool {
+        return !text.isEmpty && focusField == .emoji
+    }
     var body: some View {
         VStack(spacing: 8){
             Divider()
@@ -28,6 +42,7 @@ struct CommentSectionTypingView: View {
                 Button("😅"){ text = text + "😅" }
                 Button("🥺"){ text = text + "🥺" }
             }
+            .focused($focusField, equals: .emoji)
             .font(.system(size: 24))
             HStack(spacing: 20){
                 AvatarView(user: DeveloperPreview.user, size: .xSmall)
@@ -40,13 +55,7 @@ struct CommentSectionTypingView: View {
                         Capsule()
                             .fill(Color(.systemGray6))
                     )
-                    .focused($focusState) // Use local FocusState
-                    .onChange(of: focusState) {_, newValue in
-                        isTextFieldFocused = newValue // Sync with parent
-                    }
-                    .onChange(of: isTextFieldFocused) {_, newValue in
-                        focusState = newValue // Sync with child
-                    }
+                    .focused($focusField, equals: .comment) // Use local FocusState
                     .overlay(
                         HStack{
                             Spacer()
@@ -54,9 +63,17 @@ struct CommentSectionTypingView: View {
                                 .padding(.trailing, 10)
                                 .offset(x: showSubmitButton ? 0 : 200)
                                 .animation(.spring(response: 0.3), value: showSubmitButton)
+                                .onTapGesture {
+                                    Task{ await submitComment(comment: text) }
+                                }
                         }
                     )
                     .submitLabel(.send)
+                    .onSubmit {
+                        Task { await submitComment(comment: text) }
+                    }
+                
+                	
                 // CATCH submission button notification
                 
             }
@@ -86,10 +103,15 @@ extension CommentSectionTypingView {
             )
         }
     }
-    
-    
+
+    func submitComment(comment: String) async {
+        do { try await viewModel.uploadCommentToFirebase(message: comment) }
+        catch { print("DEBUG: Couldn't Upload comment") }
+        self.text = ""
+        self.focusField = nil
+    }
 }
 
 #Preview {
-    CommentSectionTypingView(post: DeveloperPreview.post, isTextFieldFocused: .constant(false))
+    CommentSectionTypingView(post: DeveloperPreview.post)
 }

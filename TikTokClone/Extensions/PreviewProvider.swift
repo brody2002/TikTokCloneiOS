@@ -63,4 +63,17 @@ struct DeveloperPreview {
             savesAmount: 1000,
             username: nil
     )
+    
+    static var comment: Comment = Comment(
+        id: "12345678",
+        postId: "0987654321",
+        username: "Kayne West",
+        userId: "Ye$",
+        message: "Taylor Swift is the Devil",
+        timestamp: "2025-02-13 02:10:23",
+        likes: 102,
+        thumbsDown: 2,
+        replyList: [],
+        replyAmount: 0
+    )
 }

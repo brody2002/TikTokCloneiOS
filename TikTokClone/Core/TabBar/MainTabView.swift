@@ -76,14 +76,9 @@ struct MainTabView: View {
                     }
                     .onAppear { setTabs(4) }
                     .tag(4)
-            }.tint(.black)
+            }
+            .tint(.black)
             .offset(y: moveTabViewDown ? 200 : 0)
-            
-//            Button("TEST"){
-//                withAnimation { moveTabViewDown.toggle()}
-//            }
-//            .foregroundStyle(.blue)
-            
         }
     }
 

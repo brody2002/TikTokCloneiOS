@@ -30,7 +30,7 @@ struct Post: Identifiable, Codable {
     /// Placeholder Image for profiles
     var imageUrl: String?
     /// Object that store every comment  of a post
-    var commentSection: [CommentSection]?
+    var commentSectionId: String?
     
     enum CodingKeys: String, CodingKey {
         // Strings
@@ -46,7 +46,7 @@ struct Post: Identifiable, Codable {
         case savesAmount
         case username
         case imageUrl
-        case commentSection
+        case commentSectionId
     }
 }
 

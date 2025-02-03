@@ -8,7 +8,7 @@ import Foundation
 struct Timestamp {
     static func formatDate() -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let dateString = formatter.string(from: Date())
         return dateString
     }
