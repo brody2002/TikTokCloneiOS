@@ -42,13 +42,7 @@ struct CommentSectionView: View {
             if let user = user {
                 CommentSectionTypingView(post: post, user: user, refreshId: $refreshCommentSectionId)
                     .offset(y: -30)
-                    
             }
-            
-            
-        }
-        .onTapGesture {
-            print("DEBUG: dismissKeyboard")
         }
         .task{
             self.commentSection = try? await commentSectionViewModel.fetchCommentSection(postId: post.id)

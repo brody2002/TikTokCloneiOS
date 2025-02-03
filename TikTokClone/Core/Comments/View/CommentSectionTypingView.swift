@@ -29,9 +29,8 @@ struct CommentSectionTypingView: View {
         self.focusField = nil
     }
     
-    
     private var showSubmitButton: Bool {
-        return !text.isEmpty && focusField == .emoji
+        return !text.isEmpty && focusField == nil
     }
     var body: some View {
         VStack(spacing: 8){
