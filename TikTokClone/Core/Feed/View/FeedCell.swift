@@ -17,6 +17,7 @@ struct FeedCell: View {
     @State var showCommentSheet: Bool = false
     
     
+    
     init(post: Post, player: AVPlayer) {
         self.post = post
         self.player = player
@@ -38,15 +39,17 @@ struct FeedCell: View {
                             .padding(.bottom, 2)
                         Button(
                             action:{print("DEBUG: Add to like count")},
-                            label: {  InterfaceItem(imageName: "heart.fill", inputData: post.likesAmount) })
+                            label: {  HeartView(inputData: post.likesAmount) })
+                        .frame(width: 32, height: 32)
                         Button(
                             action:{ showCommentSheet.toggle() },
                             label: { InterfaceItem(imageName: "ellipsis.bubble.fill", inputData: post.commentsAmount) }
                         )
                         Button(
                             action:{ print("DEBUG: Add to saved collection")},
-                            label: {  InterfaceItem(imageName: "bookmark.fill", inputData: post.savesAmount) }
+                            label: {  BookmarkView(inputData: post.savesAmount) }
                         )
+                        .frame(width: 32, height: 32)
                         
                         Button(
                             action:{ print("DEBUG: Share feature") },
@@ -95,20 +98,12 @@ struct FeedCell: View {
 
 extension FeedCell {
     
-    struct PostNumericsHandler: View {
-        var inputData: Int
-        var body: some View {
-            if inputData > 0{
-                Text("\(inputData)")
-            } else { Text("") }
-        }
-    }
-    
     struct InterfaceItem: View {
         let imageName: String
-        let width: CGFloat
-        let height: CGFloat
+        @State var width: CGFloat
+        @State var height: CGFloat
         let inputData: Int
+        
         init(imageName: String, width: CGFloat = 28, height: CGFloat = 28, inputData: Int) {
             self.imageName = imageName
             self.width = width
@@ -118,20 +113,19 @@ extension FeedCell {
         
         var body: some View {
             VStack{
-                Image(systemName: imageName)
-                    .resizable()
-                    .frame(width: width, height: height)
-                    .foregroundStyle(.white)
-                
+                 Image(systemName: imageName)
+                        .resizable()
+                        .frame(width: width, height: height)
+                        .foregroundStyle(.white)
                 PostNumericsHandler(inputData: inputData)
                     .font(.caption)
                     .foregroundStyle(.white)
                     .bold()
             }
-           
         }
     }
 }
+
 
 #Preview {
     FeedCell(post: DeveloperPreview.post, player: AVPlayer())

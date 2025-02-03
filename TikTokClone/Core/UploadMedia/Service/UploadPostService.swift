@@ -44,16 +44,9 @@ class UploadPostService: ObservableObject {
         
         let postId = NSUUID().uuidString
         
-        
-        let commentSection = CommentSection(
-                id: postId,
-                commentAmount: 0,
-                commentIds: []
-            )
-        
         let commentSectionDict: [String: Any] = [
                 "id": postId,
-                "commentAmount": commentSection.commentAmount,
+                "commentAmount": 0,
                 "commentIds": []
             ]
         
@@ -65,6 +58,7 @@ class UploadPostService: ObservableObject {
             "timestamp": timeStamp,
             "caption": caption,
             "likesAmount": 0,
+            "likeIds": [], // set of liked Ids
             "commentsAmount": 0,
             "savesAmount": 0,
             "commentSectionId": postId

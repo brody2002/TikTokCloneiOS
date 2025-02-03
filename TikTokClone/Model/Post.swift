@@ -31,22 +31,22 @@ struct Post: Identifiable, Codable {
     var imageUrl: String?
     /// Object that store every comment  of a post
     var commentSectionId: String?
+    /// Object that stores all the Ids that have liked this post
+    var likedIds: Set<String>?
     
     enum CodingKeys: String, CodingKey {
-        // Strings
         case id = "postId"
         case userId = "id"
         case videoURL = "videoUrl"
         case timestamp
-        // String?
         case caption
-        // Ints
         case likesAmount
         case commentsAmount
         case savesAmount
         case username
         case imageUrl
         case commentSectionId
+        case likedIds
     }
 }
 
